@@ -9,6 +9,8 @@ import { AddOrderComponent } from './shared/components/orders/add-order/add-orde
 import { EditOrderComponent } from './shared/components/orders/edit-order/edit-order.component';
 import { AddSculptureComponent } from './shared/components/sculptures/add-sculpture/add-sculpture.component';
 import { EditSculptureComponent } from './shared/components/sculptures/edit-sculpture/edit-sculpture.component';
+import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
+import { NavbarComponent } from './shared/components/navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,9 @@ import { EditSculptureComponent } from './shared/components/sculptures/edit-scul
     AddOrderComponent,
     EditOrderComponent,
     AddSculptureComponent,
-    EditSculptureComponent
+    EditSculptureComponent,
+    PageNotFoundComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
