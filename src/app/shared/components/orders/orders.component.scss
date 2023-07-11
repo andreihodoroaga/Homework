@@ -1,0 +1,27 @@
+.orders-container {
+  padding: 0 1rem;
+
+  .orders-list {
+    padding: 0;
+
+    .order-item {
+      width: 300px;
+      list-style-type: none;
+
+      .order-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 1.25rem;
+
+        a {
+          margin-right: 2rem;
+        }
+      }
+    }
+  }
+
+  .add-order-btn {
+    margin-top: 2rem;
+  }
+}
