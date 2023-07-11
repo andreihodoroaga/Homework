@@ -11,6 +11,8 @@ import { AddSculptureComponent } from './shared/components/sculptures/add-sculpt
 import { EditSculptureComponent } from './shared/components/sculptures/edit-sculpture/edit-sculpture.component';
 import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatToolbarModule} from '@angular/material/toolbar';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,9 @@ import { NavbarComponent } from './shared/components/navbar/navbar.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MatToolbarModule
   ],
   providers: [],
   bootstrap: [AppComponent]
