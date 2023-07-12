@@ -1,10 +1,10 @@
 <div class="orders-container">
   <ul class="orders-list">
-    <li class="order-item">
+    <li *ngFor="let order of orders$ | async" class="order-item">
       <mat-card>
         <mat-card-content>
           <div class="order-content">
-            <a routerLink="./1">Order 1</a>
+            <a routerLink="./1">{{ order.id }}</a>
             <button mat-mini-fab color="warn" aria-label="Delete order">
               <mat-icon>delete</mat-icon>
             </button>

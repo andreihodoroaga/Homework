@@ -1,7 +1,6 @@
 import { Component, forwardRef, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ConfiguredSculpture } from 'src/app/shared/models/configured-sculpture';
-import { Sculpture } from 'src/app/shared/models/sculpture';
 import { Material } from 'src/app/shared/models/material';
 import { SculptureService } from 'src/app/shared/services/sculpture.service';
 

@@ -49,6 +49,12 @@ ipcMain.on("get-sculptures", (event, args) => {
   event.reply("sculptures-data", sculpturesData);
 });
 
+ipcMain.on("get-orders", (event, args) => {
+  const dataPath = path.join(__dirname, "data", "orders.json");
+  const ordersData = fs.readFileSync(dataPath, "utf-8");
+  event.reply("orders-data", ordersData);
+});
+
 // On macOS, the app should close only on Cmd+Q.
 app.on('window-all-closed', () => {
   if (!isMac) {

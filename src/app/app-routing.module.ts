@@ -8,9 +8,14 @@ import { EditOrderComponent } from './shared/components/orders/edit-order/edit-o
 import { AddSculptureComponent } from './shared/components/sculptures/add-sculpture/add-sculpture.component';
 import { EditSculptureComponent } from './shared/components/sculptures/edit-sculpture/edit-sculpture.component';
 import { SculpturesResolver } from './shared/resolvers/sculptures.resolver';
+import { OrdersResolver } from './shared/resolvers/orders.resolver';
 
 const routes: Routes = [
-  { path: 'orders', component: OrdersComponent },
+  {
+    path: 'orders',
+    component: OrdersComponent,
+    resolve: { orders: OrdersResolver },
+  },
   { path: 'orders/add', component: AddOrderComponent },
   { path: 'orders/:id', component: EditOrderComponent },
   {

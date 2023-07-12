@@ -1,0 +1,18 @@
+[
+  {
+    "id": "6dab15c8-2800-454d-8970-117bc8d03534",
+    "buyerName": "John Doe",
+    "buyerDeliveryAddress": "123 Main St, Anytown, Anystate, 12345",
+    "configuredSculptures": [
+      {
+        "sculpture": {
+          "id": 1,
+          "name": "Sculpture 1",
+          "basePrice": 100,
+          "baseWeight": 50
+        },
+        "material": "Wood"
+      }
+    ]
+  }
+]

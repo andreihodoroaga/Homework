@@ -2,30 +2,21 @@ import { Injectable } from '@angular/core';
 import { IpcRenderer } from 'electron';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Sculpture } from '../models/sculpture';
+import { DataService } from './data.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SculptureService {
-  private ipcRenderer: IpcRenderer | undefined;
   private sculptures$ = new BehaviorSubject<Sculpture[]>([]);
   sculptureList$ = this.sculptures$.asObservable();
 
-  constructor() {
-    if (window.require) {
-      try {
-        this.ipcRenderer = window.require('electron').ipcRenderer;
-      } catch (e) {
-        throw e;
-      }
-    }
-  }
+  constructor(private readonly dataService: DataService) {}
 
   getSculptures() {
-    this.ipcRenderer?.send('get-sculptures');
-
-    this.ipcRenderer?.once('sculptures-data', (event, data) => {
-      this.sculptures$.next(JSON.parse(data));
+    this.dataService.sendSignal('get-sculptures');
+    this.dataService.getData('sculptures-data').subscribe(data => {
+      this.sculptures$.next(data as Sculpture[]);
     });
   }
 }

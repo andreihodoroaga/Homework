@@ -5,9 +5,8 @@ import {
   RouterStateSnapshot,
 } from '@angular/router';
 import { SculptureService } from '../services/sculpture.service';
-import { Sculpture } from '../models/sculpture';
 import { Observable } from 'rxjs';
-import { first, tap } from 'rxjs/operators';
+import { first } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',

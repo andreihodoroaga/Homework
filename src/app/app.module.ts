@@ -18,7 +18,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ConfiguredSculptureFormComponent } from './shared/components/orders/configured-sculpture-form/configured-sculpture-form.component';
+import { ConfiguredSculptureFormComponent } from './shared/components/orders/add-order/configured-sculpture-form/configured-sculpture-form.component';
 import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
