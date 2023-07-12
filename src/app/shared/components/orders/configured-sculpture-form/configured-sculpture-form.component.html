@@ -1,0 +1,21 @@
+<div class="sculpture-dropdown">
+  <mat-form-field appearance="fill">
+    <mat-label>Sculpture</mat-label>
+    <mat-select [formControl]="sculptureControl">
+      <mat-option *ngFor="let sculpture of sculptures$ | async" [value]="sculpture">
+        {{ sculpture.id }} - {{ sculpture.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
+<div class="material-dropdown">
+  <mat-form-field appearance="fill">
+    <mat-label>Material</mat-label>
+    <mat-select [formControl]="materialControl">
+      <mat-option *ngFor="let material of materials" [value]="material">
+        {{ material.toString() }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>

@@ -1,1 +1,20 @@
-<p>add-order works!</p>
+<form [formGroup]="orderForm" class="add-order-form">
+  <mat-form-field appearance="fill">
+    <mat-label>Order ID</mat-label>
+    <input matInput formControlName="id" type="text" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Buyer Name</mat-label>
+    <input matInput formControlName="buyerName" type="text" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Delivery Address</mat-label>
+    <textarea matInput formControlName="buyerDeliveryAddress"></textarea>
+  </mat-form-field>
+
+  <app-configured-sculpture-form formControlName="configuredSculptures"></app-configured-sculpture-form>
+
+  <button mat-raised-button color="primary" type="submit">Add Order</button>
+</form>

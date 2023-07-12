@@ -16,6 +16,10 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
+import { MatSelectModule } from '@angular/material/select';
+import { ReactiveFormsModule } from '@angular/forms';
+import { ConfiguredSculptureFormComponent } from './shared/components/orders/configured-sculpture-form/configured-sculpture-form.component';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [
@@ -28,6 +32,7 @@ import { MatCardModule } from '@angular/material/card';
     EditSculptureComponent,
     PageNotFoundComponent,
     NavbarComponent,
+    ConfiguredSculptureFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -37,6 +42,9 @@ import { MatCardModule } from '@angular/material/card';
     MatButtonModule,
     MatIconModule,
     MatCardModule,
+    ReactiveFormsModule,
+    MatSelectModule,
+    MatInputModule
   ],
   providers: [],
   bootstrap: [AppComponent],
