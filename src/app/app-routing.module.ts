@@ -7,20 +7,25 @@ import { AddOrderComponent } from './shared/components/orders/add-order/add-orde
 import { EditOrderComponent } from './shared/components/orders/edit-order/edit-order.component';
 import { AddSculptureComponent } from './shared/components/sculptures/add-sculpture/add-sculpture.component';
 import { EditSculptureComponent } from './shared/components/sculptures/edit-sculpture/edit-sculpture.component';
+import { SculpturesResolver } from './shared/resolvers/sculptures.resolver';
 
 const routes: Routes = [
   { path: 'orders', component: OrdersComponent },
   { path: 'orders/add', component: AddOrderComponent },
   { path: 'orders/:id', component: EditOrderComponent },
-  { path: 'sculptures', component: SculpturesComponent },
+  {
+    path: 'sculptures',
+    component: SculpturesComponent,
+    resolve: { sculptures: SculpturesResolver },
+  },
   { path: 'sculptures/add', component: AddSculptureComponent },
   { path: 'sculptures/:id', component: EditSculptureComponent },
-  { path: '',   redirectTo: '/orders', pathMatch: 'full' },
-  { path: '**', component: PageNotFoundComponent }
+  { path: '', redirectTo: '/orders', pathMatch: 'full' },
+  { path: '**', component: PageNotFoundComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

@@ -19,7 +19,6 @@ export class SculptureService {
         throw e;
       }
     }
-    this.getSculptures();
   }
 
   getSculptures() {

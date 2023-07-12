@@ -44,7 +44,6 @@ app.whenReady().then(() => {
 });
 
 ipcMain.on("get-sculptures", (event, args) => {
-  console.log("here")
   const dataPath = path.join(__dirname, "data", "sculptures.json");
   const sculpturesData = fs.readFileSync(dataPath, "utf-8");
   event.reply("sculptures-data", sculpturesData);
