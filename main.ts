@@ -1,4 +1,5 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
+const fs = require('fs');
 const path = require('path');
 const url = require('url');
 
@@ -10,6 +11,7 @@ function createWindow() {
     height: 600,
     width: isDev ? 800 : 500,
     webPreferences: {
+      contextIsolation: false,
       nodeIntegration: true,
     },
   });
@@ -41,9 +43,16 @@ app.whenReady().then(() => {
   });
 });
 
+ipcMain.on("get-sculptures", (event, args) => {
+  console.log("here")
+  const dataPath = path.join(__dirname, "data", "sculptures.json");
+  const sculpturesData = fs.readFileSync(dataPath, "utf-8");
+  event.reply("sculptures-data", sculpturesData);
+});
+
 // On macOS, the app should close only on Cmd+Q.
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
+  if (!isMac) {
     app.quit();
   }
 });
