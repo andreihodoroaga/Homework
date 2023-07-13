@@ -21,6 +21,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConfiguredSculptureFormComponent } from './shared/components/orders/add-order/configured-sculpture-form/configured-sculpture-form.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatList, MatListModule } from '@angular/material/list';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { MatChipsModule } from '@angular/material/chips';
     FormsModule,
     MatSelectModule,
     MatInputModule,
-    MatChipsModule
+    MatChipsModule,
+    MatListModule
   ],
   providers: [],
   bootstrap: [AppComponent],

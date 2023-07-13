@@ -73,7 +73,6 @@ ipcMain.on('delete-order', (event, orderIdToDelete) => {
 
   // Delete the order with the given ID
   const updatedOrders = orders.filter(order => order.id !== orderIdToDelete);
-  console.log(updatedOrders)
   const updatedOrdersData = JSON.stringify(updatedOrders, null, 2);
   fs.writeFileSync(dataPath, updatedOrdersData);
 });

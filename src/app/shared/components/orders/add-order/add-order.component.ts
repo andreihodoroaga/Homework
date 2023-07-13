@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfiguredSculpture } from 'src/app/shared/models/configured-sculpture';
 import isEqual from 'lodash-es/isEqual';
 import { Order } from 'src/app/shared/models/order';
-import { notEmptyArray } from 'src/app/shared/directives/notEmptyArray.directive';
+import { configuredSculpturesValidator } from 'src/app/shared/directives/configuredSculpturesValidator.directive';
 import { Router } from '@angular/router';
 import { OrderService } from 'src/app/shared/services/order.service';
 
@@ -21,7 +21,7 @@ export class AddOrderComponent {
     buyerName: new FormControl('', Validators.required),
     buyerDeliveryAddress: new FormControl('', Validators.required),
     configuredSculpture: new FormControl(null, Validators.required),
-    configuredSculptures: new FormControl(this._configuredSculptures, [notEmptyArray]),
+    configuredSculptures: new FormControl(this._configuredSculptures, [configuredSculpturesValidator]),
   })
 
   constructor(private readonly router: Router, private readonly orderService: OrderService) {}

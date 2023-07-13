@@ -3,30 +3,30 @@
     "id": 1,
     "name": "Sculpture 1",
     "basePrice": 100,
-    "baseWeight": 50
+    "baseWeight": 1
   },
   {
     "id": 2,
     "name": "Sculpture 2",
     "basePrice": 200,
-    "baseWeight": 100
+    "baseWeight": 2.5
   },
   {
     "id": 3,
     "name": "Sculpture 3",
     "basePrice": 300,
-    "baseWeight": 150
+    "baseWeight": 0.5
   },
   {
     "id": 4,
     "name": "Sculpture 4",
     "basePrice": 225,
-    "baseWeight": 85
+    "baseWeight": 0.75
   },
   {
     "id": 5,
     "name": "Sculpture 5",
     "basePrice": 175,
-    "baseWeight": 125
+    "baseWeight": 1.125
   }
 ]
