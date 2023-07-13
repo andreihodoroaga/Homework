@@ -56,7 +56,6 @@ export class AddOrderComponent {
       this.orderService.addOrder(order);
     }
 
-    // this.router.navigate(["orders"]);
-    this.orderForm.reset();
+    this.router.navigate(["orders"]);
   }
 }

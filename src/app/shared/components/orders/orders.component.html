@@ -5,7 +5,7 @@
         <mat-card-content>
           <div class="order-content">
             <a routerLink="./1">{{ order.id }}</a>
-            <button mat-mini-fab color="warn" aria-label="Delete order">
+            <button mat-mini-fab color="warn" aria-label="Delete order" (click)="deleteOrder(order)">
               <mat-icon>delete</mat-icon>
             </button>
           </div>

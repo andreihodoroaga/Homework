@@ -14,21 +14,5 @@
         "material": "Wood"
       }
     ]
-  },
-  {
-    "id": "asdc",
-    "buyerName": "ccs",
-    "buyerDeliveryAddress": "gb",
-    "configuredSculptures": [
-      {
-        "sculpture": {
-          "id": 3,
-          "name": "Sculpture 3",
-          "basePrice": 300,
-          "baseWeight": 150
-        },
-        "material": "Bronze"
-      }
-    ]
   }
 ]

@@ -66,6 +66,18 @@ ipcMain.on('add-order', (event, newOrder) => {
   fs.writeFileSync(dataPath, updatedOrdersData);
 });
 
+ipcMain.on('delete-order', (event, orderIdToDelete) => {
+  const dataPath = path.join(__dirname, 'data', 'orders.json');
+  const ordersData = fs.readFileSync(dataPath, 'utf-8');
+  const orders = JSON.parse(ordersData);
+
+  // Delete the order with the given ID
+  const updatedOrders = orders.filter(order => order.id !== orderIdToDelete);
+  console.log(updatedOrders)
+  const updatedOrdersData = JSON.stringify(updatedOrders, null, 2);
+  fs.writeFileSync(dataPath, updatedOrdersData);
+});
+
 // On macOS, the app should close only on Cmd+Q.
 app.on('window-all-closed', () => {
   if (!isMac) {

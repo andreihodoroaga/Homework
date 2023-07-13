@@ -21,5 +21,11 @@ export class OrderService {
 
   addOrder(order: Order) {
     this.dataService.sendData('add-order', order);
+    this.ordersData$.next([...this.ordersData$.value, order]);
+  }
+
+  deleteOrder(order: Order) {
+    this.dataService.deleteData('delete-order', order.id);
+    this.ordersData$.next([...this.ordersData$.value.filter(ord => ord.id !== order.id)]);
   }
 }

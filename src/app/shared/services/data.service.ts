@@ -34,4 +34,8 @@ export class DataService {
   sendData(signal: string, data: any) {
     this.ipcRenderer?.send(signal, data);
   }
+
+  deleteData(signal: string, data: any) {
+    this.ipcRenderer?.send(signal, data);
+  }
 }

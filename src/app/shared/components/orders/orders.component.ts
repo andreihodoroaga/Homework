@@ -1,5 +1,6 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { OrderService } from '../../services/order.service';
+import { Order } from '../../models/order';
 
 @Component({
   selector: 'app-orders',
@@ -7,11 +8,12 @@ import { OrderService } from '../../services/order.service';
   styleUrls: ['./orders.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class OrdersComponent implements OnInit {
+export class OrdersComponent {
   orders$ = this.orderService.orders$;
 
   constructor(private orderService: OrderService) {}
 
-  ngOnInit(): void {
+  deleteOrder(order: Order) {
+    this.orderService.deleteOrder(order);
   }
 }
