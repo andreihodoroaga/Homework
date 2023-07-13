@@ -1,21 +1,5 @@
 [
   {
-    "id": "dasd",
-    "buyerName": "dasd",
-    "buyerDeliveryAddress": "asda",
-    "configuredSculptures": [
-      {
-        "sculpture": {
-          "id": 2,
-          "name": "Sculpture 2",
-          "basePrice": 200,
-          "baseWeight": 2.5
-        },
-        "material": "Wood"
-      }
-    ]
-  },
-  {
     "id": "sadf",
     "buyerName": "da",
     "buyerDeliveryAddress": "sda",
@@ -53,6 +37,22 @@
           "baseWeight": 0.75
         },
         "material": "Platinum"
+      }
+    ]
+  },
+  {
+    "id": "handleNavigation() {     this.ngZone.run(() => {       this.router.navigate([\"orders/add\"])     })   }handleNavigation() {     this.ngZone.run(() => {       this.router.navigate([\"orders/add\"])     })   }handleNavigation() {     this.ngZone.run(() => {       this.router.navigate([\"orders/add\"])     })   }handleNavigation() {     this.ngZone.run(() => {       this.router.navigate([\"orders/add\"])     })   }",
+    "buyerName": "asda",
+    "buyerDeliveryAddress": "sada",
+    "configuredSculptures": [
+      {
+        "sculpture": {
+          "id": 1,
+          "name": "Sculpture 1",
+          "basePrice": 100,
+          "baseWeight": 1
+        },
+        "material": "Wood"
       }
     ]
   }

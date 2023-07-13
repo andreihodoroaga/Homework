@@ -5,7 +5,7 @@
     padding: 0;
 
     .order-item {
-      width: 300px;
+      width: 400px;
       margin-bottom: 1rem;
       list-style-type: none;
 
@@ -17,6 +17,9 @@
 
         a {
           margin-right: 2rem;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
         }
       }
     }

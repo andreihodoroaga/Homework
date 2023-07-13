@@ -1,6 +1,7 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, NgZone } from '@angular/core';
 import { OrderService } from '../../services/order.service';
 import { Order } from '../../models/order';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-orders',
@@ -11,9 +12,15 @@ import { Order } from '../../models/order';
 export class OrdersComponent {
   orders$ = this.orderService.orders$;
 
-  constructor(private orderService: OrderService) {}
+  constructor(private orderService: OrderService, private ngZone: NgZone, private router: Router) {}
 
   deleteOrder(order: Order) {
     this.orderService.deleteOrder(order);
+  }
+
+  handleNavigation() {
+    this.ngZone.run(() => {
+      this.router.navigate(["orders/add"])
+    })
   }
 }
