@@ -15,8 +15,11 @@ export class OrderService {
   getOrders() {
     this.dataService.sendSignal('get-orders');
     this.dataService.getData('orders-data').subscribe(data => {
-      console.log(data)
       this.ordersData$.next(data as Order[]);
     });
+  }
+
+  addOrder(order: Order) {
+    this.dataService.sendData('add-order', order);
   }
 }

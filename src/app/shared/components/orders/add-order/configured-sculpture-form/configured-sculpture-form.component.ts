@@ -1,7 +1,8 @@
-import { Component, forwardRef, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, forwardRef, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ConfiguredSculpture } from 'src/app/shared/models/configured-sculpture';
 import { Material } from 'src/app/shared/models/material';
+import { Sculpture } from 'src/app/shared/models/sculpture';
 import { SculptureService } from 'src/app/shared/services/sculpture.service';
 
 @Component({
@@ -28,6 +29,10 @@ export class ConfiguredSculptureFormComponent implements ControlValueAccessor, O
 
   sculptureControl = new FormControl();
   materialControl = new FormControl();
+
+  @Input() configuredSculptures: ConfiguredSculpture[] = [];
+  @Output() newConfiguredSculptureEvent = new EventEmitter<ConfiguredSculpture>();
+  @Output() removeConfiguredSculptureEvent = new EventEmitter<ConfiguredSculpture>();
 
   constructor(private sculptureService: SculptureService) {
     this.sculptureControl.valueChanges.subscribe(() => this.updateValue());
@@ -65,5 +70,18 @@ export class ConfiguredSculptureFormComponent implements ControlValueAccessor, O
     };
     this.onChange(this.value);
     this.onTouched();
+  }
+
+  onSubmit(sculpture: Sculpture, material: Material) {
+    const configuredSculpture: ConfiguredSculpture = {
+      sculpture,
+      material
+    }
+
+    this.newConfiguredSculptureEvent.emit(configuredSculpture);
+  }
+
+  removeConfiguredSculpture(configuredSculpture: ConfiguredSculpture) {
+    this.removeConfiguredSculptureEvent.emit(configuredSculpture);
   }
 }

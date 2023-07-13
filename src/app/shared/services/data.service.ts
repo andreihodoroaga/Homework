@@ -30,4 +30,8 @@ export class DataService {
       });
     })
   }
+
+  sendData(signal: string, data: any) {
+    this.ipcRenderer?.send(signal, data);
+  }
 }

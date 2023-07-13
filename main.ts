@@ -55,6 +55,17 @@ ipcMain.on("get-orders", (event, args) => {
   event.reply("orders-data", ordersData);
 });
 
+ipcMain.on('add-order', (event, newOrder) => {
+  const dataPath = path.join(__dirname, 'data', 'orders.json');
+  const ordersData = fs.readFileSync(dataPath, 'utf-8');
+  const orders = JSON.parse(ordersData);
+
+  // Add the new order
+  orders.push(newOrder);
+  const updatedOrdersData = JSON.stringify(orders, null, 2);
+  fs.writeFileSync(dataPath, updatedOrdersData);
+});
+
 // On macOS, the app should close only on Cmd+Q.
 app.on('window-all-closed', () => {
   if (!isMac) {
