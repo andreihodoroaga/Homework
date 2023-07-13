@@ -1,10 +1,11 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfiguredSculpture } from 'src/app/shared/models/configured-sculpture';
 import { Order } from 'src/app/shared/models/order';
-import { configuredSculpturesValidator } from 'src/app/shared/directives/configuredSculpturesValidator.directive';
+import { emptyArrayValidator } from 'src/app/shared/directives/emptyArrayValidator';
 import { Router } from '@angular/router';
 import { OrderService } from 'src/app/shared/services/order.service';
+import { totalWeightValidator } from 'src/app/shared/directives/totalWeightValidator.directive';
 
 @Component({
   selector: 'app-add-order',
@@ -12,8 +13,9 @@ import { OrderService } from 'src/app/shared/services/order.service';
   styleUrls: ['./add-order.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AddOrderComponent {
+export class AddOrderComponent implements OnInit {
   private _configuredSculptures: ConfiguredSculpture[] = [];
+  exceededWeightError: string | null = null;
 
   orderForm = new FormGroup({
     id: new FormControl('', Validators.required),
@@ -21,7 +23,8 @@ export class AddOrderComponent {
     buyerDeliveryAddress: new FormControl('', Validators.required),
     configuredSculpture: new FormControl(null, Validators.required),
     configuredSculptures: new FormControl(this._configuredSculptures, [
-      configuredSculpturesValidator,
+      emptyArrayValidator,
+      totalWeightValidator
     ]),
   });
 
@@ -29,6 +32,17 @@ export class AddOrderComponent {
     private readonly router: Router,
     private readonly orderService: OrderService
   ) {}
+
+  ngOnInit(): void {
+    // Assuming you have the ngOnInit method, add this line:
+    this.orderForm.valueChanges.subscribe(() => {
+      if(this.orderForm.controls['configuredSculptures'].errors?.['invalidWeight']) {
+        this.exceededWeightError = "We only ship a maximum of 100 kg of sculptures! (our courier needs to hit the gym more)"
+      } else {
+        this.exceededWeightError = null;
+      }
+  });
+  }
 
   public get configuredSculptures(): ConfiguredSculpture[] {
     return this._configuredSculptures;

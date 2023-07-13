@@ -30,5 +30,30 @@
         "material": "Wood"
       }
     ]
+  },
+  {
+    "id": "dsa",
+    "buyerName": "dasxav",
+    "buyerDeliveryAddress": "dasd",
+    "configuredSculptures": [
+      {
+        "sculpture": {
+          "id": 3,
+          "name": "Sculpture 3",
+          "basePrice": 300,
+          "baseWeight": 0.5
+        },
+        "material": "Bronze"
+      },
+      {
+        "sculpture": {
+          "id": 4,
+          "name": "Sculpture 4",
+          "basePrice": 225,
+          "baseWeight": 0.75
+        },
+        "material": "Platinum"
+      }
+    ]
   }
 ]

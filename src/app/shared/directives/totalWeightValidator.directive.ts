@@ -1,9 +1,8 @@
-// validators.ts
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { ConfiguredSculpture } from '../models/configured-sculpture';
 import { Material, materialWeightMultipliers } from '../models/material';
 
-export const configuredSculpturesValidator: ValidatorFn = (
+export const totalWeightValidator: ValidatorFn = (
   control: AbstractControl
 ): ValidationErrors | null => {
   const array = control.value as ConfiguredSculpture[];
@@ -22,12 +21,14 @@ export const configuredSculpturesValidator: ValidatorFn = (
 
     const weightMultiplier = materialWeightMultipliers[mat];
     totalWeight += sculpture.sculpture.baseWeight * weightMultiplier;
-    console.log(totalWeight)
   }
 
-  if (array && array.length > 0 && totalWeight <= 100) {
+  if (totalWeight <= 100) {
     return null;
   }
 
-  return { invalidArray: true };
+  return { invalidWeight: true };
 };
+
+
+

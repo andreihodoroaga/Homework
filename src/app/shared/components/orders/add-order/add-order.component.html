@@ -17,6 +17,9 @@
   <app-configured-sculpture-form formControlName="configuredSculpture" [configuredSculptures]="configuredSculptures"
     (newConfiguredSculptureEvent)="addConfiguredSculpture($event)"
     (removeConfiguredSculptureEvent)="removeConfiguredSculpture($event)"></app-configured-sculpture-form>
+    <mat-error *ngIf="exceededWeightError">
+      {{ exceededWeightError }}
+    </mat-error>
 
   <button mat-raised-button color="accent" type="submit" [disabled]="!orderForm.valid">Send Order</button>
 </form>
