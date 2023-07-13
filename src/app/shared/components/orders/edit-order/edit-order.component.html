@@ -1,1 +1,31 @@
-<p>edit-order works!</p>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Order ID: {{ order.id }}</mat-card-title>
+    <mat-card-subtitle>Buyer: {{ order.buyerName }}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <div>
+      <h3>Delivery Address:</h3>
+      <p>{{ order.buyerDeliveryAddress }}</p>
+    </div>
+    <div>
+      <h3>Configured Sculptures:</h3>
+      <mat-list>
+        <ng-container *ngFor="let sculptureItem of order.configuredSculptures">
+          <mat-list-item>
+            <div class="sculpture-details">
+              <div>{{ sculptureItem.sculpture.name }}</div>
+              <div>Base Price: {{ sculptureItem.sculpture.basePrice }}</div>
+              <div>Base Weight: {{ sculptureItem.sculpture.baseWeight }}</div>
+              <div>Material: {{ sculptureItem.material }}</div>
+            </div>
+          </mat-list-item>
+        </ng-container>
+      </mat-list>
+    </div>
+  </mat-card-content>
+  <mat-card-footer>
+    <button mat-stroked-button color="primary" (click)="handleNavigation(-1)">Previous</button>
+    <button mat-stroked-button color="primary" (click)="handleNavigation(+1)">Next</button>
+  </mat-card-footer>
+</mat-card>

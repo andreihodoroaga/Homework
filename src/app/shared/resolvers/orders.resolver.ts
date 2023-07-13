@@ -19,8 +19,6 @@ export class OrdersResolver implements Resolve<Observable<any>> {
     state: RouterStateSnapshot
   ): Observable<any> {
     this.orderService.getOrders();
-    return this.orderService.orders$.pipe(
-      first((orders) => orders && orders.length > 0),
-    );
+    return this.orderService.orders$;
   }
 }

@@ -1,15 +1,31 @@
 [
   {
-    "id": "6dab15c8-2800-454d-8970-117bc8d03534",
-    "buyerName": "John Doe",
-    "buyerDeliveryAddress": "123 Main St, Anytown, Anystate, 12345",
+    "id": "dasd",
+    "buyerName": "dasd",
+    "buyerDeliveryAddress": "asda",
+    "configuredSculptures": [
+      {
+        "sculpture": {
+          "id": 2,
+          "name": "Sculpture 2",
+          "basePrice": 200,
+          "baseWeight": 2.5
+        },
+        "material": "Wood"
+      }
+    ]
+  },
+  {
+    "id": "sadf",
+    "buyerName": "da",
+    "buyerDeliveryAddress": "sda",
     "configuredSculptures": [
       {
         "sculpture": {
           "id": 1,
           "name": "Sculpture 1",
           "basePrice": 100,
-          "baseWeight": 50
+          "baseWeight": 1
         },
         "material": "Wood"
       }

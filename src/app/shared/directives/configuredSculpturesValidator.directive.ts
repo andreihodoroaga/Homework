@@ -11,7 +11,6 @@ export const configuredSculpturesValidator: ValidatorFn = (
   let totalWeight = 0;
   for (let sculpture of array) {
     let mat = Material.Wood;
-    console.log(sculpture.material)
     switch(sculpture.material.toString()) {
       case 'Bronze':
         mat = Material.Bronze;
@@ -25,7 +24,6 @@ export const configuredSculpturesValidator: ValidatorFn = (
     totalWeight += sculpture.sculpture.baseWeight * weightMultiplier;
     console.log(totalWeight)
   }
-
 
   if (array && array.length > 0 && totalWeight <= 100) {
     return null;

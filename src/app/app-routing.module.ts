@@ -17,7 +17,7 @@ const routes: Routes = [
     resolve: { orders: OrdersResolver },
   },
   { path: 'orders/add', component: AddOrderComponent },
-  { path: 'orders/:id', component: EditOrderComponent },
+  { path: 'orders/:id', component: EditOrderComponent, resolve: { orders: OrdersResolver } },
   {
     path: 'sculptures',
     component: SculpturesComponent,

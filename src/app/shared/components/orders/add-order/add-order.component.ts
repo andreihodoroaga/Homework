@@ -1,7 +1,6 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfiguredSculpture } from 'src/app/shared/models/configured-sculpture';
-import isEqual from 'lodash-es/isEqual';
 import { Order } from 'src/app/shared/models/order';
 import { configuredSculpturesValidator } from 'src/app/shared/directives/configuredSculpturesValidator.directive';
 import { Router } from '@angular/router';
@@ -21,10 +20,15 @@ export class AddOrderComponent {
     buyerName: new FormControl('', Validators.required),
     buyerDeliveryAddress: new FormControl('', Validators.required),
     configuredSculpture: new FormControl(null, Validators.required),
-    configuredSculptures: new FormControl(this._configuredSculptures, [configuredSculpturesValidator]),
-  })
+    configuredSculptures: new FormControl(this._configuredSculptures, [
+      configuredSculpturesValidator,
+    ]),
+  });
 
-  constructor(private readonly router: Router, private readonly orderService: OrderService) {}
+  constructor(
+    private readonly router: Router,
+    private readonly orderService: OrderService
+  ) {}
 
   public get configuredSculptures(): ConfiguredSculpture[] {
     return this._configuredSculptures;
@@ -33,13 +37,19 @@ export class AddOrderComponent {
   addConfiguredSculpture(configuredSculpture: ConfiguredSculpture) {
     this._configuredSculptures.push(configuredSculpture);
     // update the value in the form control as well
-    this.orderForm.get('configuredSculptures')?.setValue(this._configuredSculptures);
+    this.orderForm
+      .get('configuredSculptures')
+      ?.setValue(this._configuredSculptures);
   }
 
   removeConfiguredSculpture(configuredSculpture: ConfiguredSculpture) {
-    this._configuredSculptures = this._configuredSculptures.filter(sculpture => !isEqual(sculpture, configuredSculpture));
+    this._configuredSculptures = this._configuredSculptures.filter(
+      (sculpture) => sculpture !== configuredSculpture
+    );
     // update the value in the form control as well
-    this.orderForm.get('configuredSculptures')?.setValue(this._configuredSculptures);
+    this.orderForm
+      .get('configuredSculptures')
+      ?.setValue(this._configuredSculptures);
   }
 
   onSubmit() {
@@ -50,12 +60,12 @@ export class AddOrderComponent {
         id,
         buyerName,
         buyerDeliveryAddress,
-        configuredSculptures: this.configuredSculptures
-      }
+        configuredSculptures: this.configuredSculptures,
+      };
 
       this.orderService.addOrder(order);
     }
 
-    this.router.navigate(["orders"]);
+    this.router.navigate(['orders']);
   }
 }
