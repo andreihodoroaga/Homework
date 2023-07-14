@@ -1,4 +1,6 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+import { ipcRenderer } from "electron";
+
+const { app, BrowserWindow, ipcMain, Menu } = require('electron');
 const fs = require('fs');
 const path = require('path');
 const url = require('url');
@@ -7,7 +9,7 @@ const isDev = process.env['NODE_ENV'] !== 'production';
 const isMac = process.platform === 'darwin';
 
 function createWindow() {
-  const mainWindow = new BrowserWindow({
+  const window = new BrowserWindow({
     height: 600,
     width: isDev ? 800 : 500,
     webPreferences: {
@@ -17,11 +19,11 @@ function createWindow() {
   });
 
   if (isDev) {
-    mainWindow.loadURL('http://localhost:4200');
+    window.loadURL('http://localhost:4200');
   } else {
-    mainWindow.loadURL(
+    window.loadURL(
       url.format({
-        pathname: path.join(__dirname, `/dist/your-app-name/index.html`),
+        pathname: path.join(__dirname, `/dist/homework/index.html`),
         protocol: 'file:',
         slashes: true,
       })
@@ -29,19 +31,46 @@ function createWindow() {
   }
 
   if (isDev) {
-    mainWindow.webContents.openDevTools();
+    window.webContents.openDevTools();
   }
+
+  return window;
 }
 
+let mainWindow;
+let secondaryWindow;
+
 app.whenReady().then(() => {
-  createWindow();
+  mainWindow = createWindow();
+  setCustomMenu();
 
   app.on('activate', function () {
-    // On macOS it's common to re-create a window in the app when the
-    // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
 });
+
+const menuTemplate = [
+  ...(isMac ? [{ role: 'appMenu' }] : []),
+  {
+    label: 'File',
+    submenu: [
+      {
+        label: 'New Window',
+        accelerator: 'CmdOrCtrl+N',
+        click: () => {
+          secondaryWindow = createWindow();
+        },
+      },
+      { role: 'quit' },
+    ],
+  },
+];
+
+// Set the custom menu
+function setCustomMenu() {
+  const menu = Menu.buildFromTemplate(menuTemplate);
+  Menu.setApplicationMenu(menu);
+}
 
 ipcMain.handle("get-sculptures", (event, args) => {
   const dataPath = path.join(__dirname, "data", "sculptures.json");
@@ -64,6 +93,10 @@ ipcMain.handle('add-order', (event, newOrder) => {
   orders.push(newOrder);
   const updatedOrdersData = JSON.stringify(orders, null, 2);
   fs.writeFileSync(dataPath, updatedOrdersData);
+
+  // Update the other windows as well
+  reloadOpenWindows();
+
   return orders;
 });
 
@@ -76,8 +109,24 @@ ipcMain.handle('delete-order', (event, orderIdToDelete) => {
   const updatedOrders = orders.filter(order => order.id !== orderIdToDelete);
   const updatedOrdersData = JSON.stringify(updatedOrders, null, 2);
   fs.writeFileSync(dataPath, updatedOrdersData);
+
+  // Update the other windows as well
+  reloadOpenWindows();
+
   return updatedOrders;
 });
+
+function reloadOpenWindows() {
+  for (let window of BrowserWindow.getAllWindows()) {
+    if (window !== mainWindow) {
+      window.webContents.send('reload-content');
+    }
+  }
+}
+
+ipcRenderer.on('reload-content', () => {
+
+})
 
 // On macOS, the app should close only on Cmd+Q.
 app.on('window-all-closed', () => {
