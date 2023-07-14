@@ -19,8 +19,6 @@ export class OrdersComponent {
   }
 
   handleNavigation() {
-    this.ngZone.run(() => {
-      this.router.navigate(["orders/add"])
-    })
+    this.router.navigate(["orders/add"])
   }
 }

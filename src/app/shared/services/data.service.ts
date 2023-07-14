@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { IpcRenderer } from 'electron';
 import { Observable } from 'rxjs';
 
@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 export class DataService {
   private ipcRenderer: IpcRenderer | undefined;
 
-  constructor() {
+  constructor(private readonly ngZone: NgZone) {
     if (window.require) {
       try {
         this.ipcRenderer = window.require('electron').ipcRenderer;
@@ -25,8 +25,10 @@ export class DataService {
   getData(signal: string) {
     return new Observable(subscriber => {
       this.ipcRenderer?.once(signal, (event, data) => {
-        subscriber.next(JSON.parse(data));
-        subscriber.complete();
+        this.ngZone.run(() => {
+          subscriber.next(JSON.parse(data));
+          subscriber.complete();
+        })
       });
     })
   }
