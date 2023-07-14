@@ -10,11 +10,12 @@ export class OrderService {
   private ordersData$ = new ReplaySubject<Order[]>(1);
   orders$ = this.ordersData$.asObservable();
 
-  constructor(private readonly dataService: DataService) {}
+  constructor(private readonly dataService: DataService) {
+    this.getOrders();
+  }
 
   getOrders() {
-    this.dataService.sendSignal('get-orders');
-    this.dataService.getData('orders-data').subscribe((data) => {
+    this.dataService.getData('get-orders').subscribe((data) => {
       this.ordersData$.next(data as Order[]);
     });
   }

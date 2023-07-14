@@ -3,7 +3,7 @@ import { IpcRenderer } from 'electron';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DataService {
   private ipcRenderer: IpcRenderer | undefined;
@@ -18,26 +18,22 @@ export class DataService {
     }
   }
 
-  sendSignal(signal: string) {
-    this.ipcRenderer?.send(signal);
-  }
-
   getData(signal: string) {
-    return new Observable(subscriber => {
-      this.ipcRenderer?.once(signal, (event, data) => {
+    return new Observable((subscriber) => {
+      this.ipcRenderer?.invoke(signal).then((data) => {
         this.ngZone.run(() => {
           subscriber.next(JSON.parse(data));
           subscriber.complete();
-        })
+        });
       });
-    })
+    });
   }
 
   sendData(signal: string, data: any) {
-    this.ipcRenderer?.send(signal, data);
+    this.ipcRenderer?.invoke(signal, data);
   }
 
   deleteData(signal: string, data: any) {
-    this.ipcRenderer?.send(signal, data);
+    this.ipcRenderer?.invoke(signal, data);
   }
 }

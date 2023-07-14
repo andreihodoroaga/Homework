@@ -11,11 +11,12 @@ export class SculptureService {
   private sculptures$ = new BehaviorSubject<Sculpture[]>([]);
   sculptureList$ = this.sculptures$.asObservable();
 
-  constructor(private readonly dataService: DataService) {}
+  constructor(private readonly dataService: DataService) {
+    this.getSculptures();
+  }
 
   getSculptures() {
-    this.dataService.sendSignal('get-sculptures');
-    this.dataService.getData('sculptures-data').subscribe(data => {
+    this.dataService.getData('get-sculptures').subscribe(data => {
       this.sculptures$.next(data as Sculpture[]);
     });
   }

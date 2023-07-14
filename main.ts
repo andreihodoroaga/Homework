@@ -43,19 +43,19 @@ app.whenReady().then(() => {
   });
 });
 
-ipcMain.on("get-sculptures", (event, args) => {
+ipcMain.handle("get-sculptures", (event, args) => {
   const dataPath = path.join(__dirname, "data", "sculptures.json");
   const sculpturesData = fs.readFileSync(dataPath, "utf-8");
-  event.reply("sculptures-data", sculpturesData);
+  return sculpturesData;
 });
 
-ipcMain.on("get-orders", (event, args) => {
+ipcMain.handle("get-orders", (event, args) => {
   const dataPath = path.join(__dirname, "data", "orders.json");
   const ordersData = fs.readFileSync(dataPath, "utf-8");
-  event.reply("orders-data", ordersData);
+  return ordersData;
 });
 
-ipcMain.on('add-order', (event, newOrder) => {
+ipcMain.handle('add-order', (event, newOrder) => {
   const dataPath = path.join(__dirname, 'data', 'orders.json');
   const ordersData = fs.readFileSync(dataPath, 'utf-8');
   const orders = JSON.parse(ordersData);
@@ -64,9 +64,10 @@ ipcMain.on('add-order', (event, newOrder) => {
   orders.push(newOrder);
   const updatedOrdersData = JSON.stringify(orders, null, 2);
   fs.writeFileSync(dataPath, updatedOrdersData);
+  return orders;
 });
 
-ipcMain.on('delete-order', (event, orderIdToDelete) => {
+ipcMain.handle('delete-order', (event, orderIdToDelete) => {
   const dataPath = path.join(__dirname, 'data', 'orders.json');
   const ordersData = fs.readFileSync(dataPath, 'utf-8');
   const orders = JSON.parse(ordersData);
@@ -75,6 +76,7 @@ ipcMain.on('delete-order', (event, orderIdToDelete) => {
   const updatedOrders = orders.filter(order => order.id !== orderIdToDelete);
   const updatedOrdersData = JSON.stringify(updatedOrders, null, 2);
   fs.writeFileSync(dataPath, updatedOrdersData);
+  return updatedOrders;
 });
 
 // On macOS, the app should close only on Cmd+Q.
