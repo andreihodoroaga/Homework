@@ -1,6 +1,6 @@
 import { Injectable, NgZone } from '@angular/core';
 import { IpcRenderer } from 'electron';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, from } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -35,10 +35,10 @@ export class DataService {
   }
 
   sendData(signal: string, data: any) {
-    this.ipcRenderer?.invoke(signal, data);
+    return from(this.ipcRenderer!.invoke(signal, data));
   }
 
   deleteData(signal: string, data: any) {
-    this.ipcRenderer?.invoke(signal, data);
+    return from(this.ipcRenderer!.invoke(signal, data));
   }
 }
