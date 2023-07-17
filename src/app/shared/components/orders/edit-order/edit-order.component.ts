@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, NgZone, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, map, takeUntil, tap } from 'rxjs';
 import { Order } from 'src/app/shared/models/order';
@@ -10,7 +10,7 @@ import { OrderService } from 'src/app/shared/services/order.service';
   styleUrls: ['./edit-order.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EditOrderComponent implements OnDestroy{
+export class EditOrderComponent implements OnInit, OnDestroy {
   order!: Order;
   private destroyed$ = new Subject<void>();
 
