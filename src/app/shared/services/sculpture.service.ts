@@ -12,10 +12,10 @@ export class SculptureService {
   sculptureList$ = this.sculptures$.asObservable();
 
   constructor(private readonly dataService: DataService) {
-    this.getSculptures();
+    this.fetchSculptures();
   }
 
-  getSculptures() {
+  fetchSculptures() {
     this.dataService.getData('get-sculptures').subscribe(data => {
       this.sculptures$.next(data as Sculpture[]);
     });
