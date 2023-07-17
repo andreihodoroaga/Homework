@@ -1,5 +1,3 @@
-import { ipcRenderer } from "electron";
-
 const { app, BrowserWindow, ipcMain, Menu } = require('electron');
 const fs = require('fs');
 const path = require('path');
@@ -123,10 +121,6 @@ function reloadOpenWindows() {
     }
   }
 }
-
-ipcRenderer.on('reload-content', () => {
-
-})
 
 // On macOS, the app should close only on Cmd+Q.
 app.on('window-all-closed', () => {

@@ -11,7 +11,9 @@ export class OrderService {
   orders$ = this.ordersData$.asObservable();
 
   constructor(private readonly dataService: DataService) {
-    this.getOrders();
+    this.dataService.refresh$.subscribe(() => {
+      this.getOrders();
+    })
   }
 
   getOrders() {

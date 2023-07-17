@@ -1,17 +1,22 @@
 import { Injectable, NgZone } from '@angular/core';
 import { IpcRenderer } from 'electron';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DataService {
   private ipcRenderer: IpcRenderer | undefined;
+  private refreshContent$ = new BehaviorSubject<string>('');
+  refresh$ = this.refreshContent$.asObservable();
 
   constructor(private readonly ngZone: NgZone) {
     if (window.require) {
       try {
         this.ipcRenderer = window.require('electron').ipcRenderer;
+        this.ipcRenderer.on('reload-content', () => {
+          this.refreshContent$.next("refresh");
+        })
       } catch (e) {
         throw e;
       }
