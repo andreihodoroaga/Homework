@@ -28,7 +28,6 @@ export class OrderService {
       this.fetchOrders();
       return 'Success';
     } catch (error) {
-      console.log(error);
       return "Error adding the order";
     }
   }
@@ -39,7 +38,6 @@ export class OrderService {
       this.fetchOrders();
       return 'Success';
     } catch (error) {
-      console.log(error);
       return 'Error deleting the order!';
     }
   }
