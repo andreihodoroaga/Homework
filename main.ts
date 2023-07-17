@@ -76,47 +76,36 @@ ipcMain.handle("get-orders", (event, args) => {
 });
 
 ipcMain.handle('add-order', (event, newOrder) => {
-  try {
-    const dataPath = path.join(__dirname, 'data', 'orders.json');
-    const ordersData = fs.readFileSync(dataPath, 'utf-8');
-    const orders = JSON.parse(ordersData);
+  const dataPath = path.join(__dirname, 'data', 'orders.json');
+  const ordersData = fs.readFileSync(dataPath, 'utf-8');
+  const orders = JSON.parse(ordersData);
 
-    // Add the new order
-    orders.push(newOrder);
-    const updatedOrdersData = JSON.stringify(orders, null, 2);
-    fs.writeFileSync(dataPath, updatedOrdersData);
+  // Add the new order
+  orders.push(newOrder);
+  const updatedOrdersData = JSON.stringify(orders, null, 2);
+  fs.writeFileSync(dataPath, updatedOrdersData);
 
-    // Update the other windows as well
-    reloadOpenWindows();
+  // Update the other windows as well
+  reloadOpenWindows();
 
-    return { success: true };
-  } catch (error) {
-    console.error('Error adding the order:', error.message);
-    return { success: false, error: error.message };
-  }
+  return orders;
 });
 
 ipcMain.handle('delete-order', (event, orderIdToDelete) => {
-  try {
-    const dataPath = path.join(__dirname, 'data', 'orders.json');
-    const ordersData = fs.readFileSync(dataPath, 'utf-8');
-    const orders = JSON.parse(ordersData);
+  const dataPath = path.join(__dirname, 'data', 'orders.json');
+  const ordersData = fs.readFileSync(dataPath, 'utf-8');
+  const orders = JSON.parse(ordersData);
 
-    // Delete the order with the given ID
-    const updatedOrders = orders.filter(order => order.id !== orderIdToDelete);
-    const updatedOrdersData = JSON.stringify(updatedOrders, null, 2);
-    fs.writeFileSync(dataPath, updatedOrdersData);
+  // Delete the order with the given ID
+  const updatedOrders = orders.filter(order => order.id !== orderIdToDelete);
+  const updatedOrdersData = JSON.stringify(updatedOrders, null, 2);
+  fs.writeFileSync(dataPath, updatedOrdersData);
 
-    // Update the other windows as well
-    reloadOpenWindows();
+  // Update the other windows as well
+  reloadOpenWindows();
 
-    return { success: true };
-  } catch (error) {
-    console.error('Error deleting the order:', error.message);
-    return { success: false, error: error.message };
-  }
+  return updatedOrders;
 });
-
 
 function reloadOpenWindows() {
   for (let window of BrowserWindow.getAllWindows()) {

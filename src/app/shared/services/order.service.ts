@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ReplaySubject, first, map } from 'rxjs';
+import { BehaviorSubject, ReplaySubject, Subject, first, map } from 'rxjs';
 import { Order } from '../models/order';
 import { DataService } from './data.service';
 
@@ -12,28 +12,30 @@ export class OrderService {
 
   constructor(private readonly dataService: DataService) {
     this.dataService.refresh$.subscribe(() => {
-      this.fetchOrders();
+      this.getOrders();
     })
-   }
+  }
 
-  fetchOrders() {
+  getOrders() {
     this.dataService.getData('get-orders').subscribe((data) => {
       this.ordersData$.next(data as Order[]);
     });
   }
 
   addOrder(order: Order) {
-    this.dataService.sendData('add-order', order).subscribe({
-      next: () => this.fetchOrders(),
-      error: (response) => console.log(response.error)
-    });
+    this.ordersData$.pipe(first()).subscribe(prev => {
+      this.dataService.sendData('add-order', order);
+      this.ordersData$.next([...prev, order]);
+    })
   }
 
   deleteOrder(order: Order) {
-    this.dataService.deleteData('delete-order', order.id).subscribe({
-      next: () => this.fetchOrders(),
-      error: (response) => console.log(response.error)
-    });
+    this.ordersData$.pipe(first()).subscribe(prev => {
+      this.dataService.deleteData('delete-order', order.id);
+      this.ordersData$.next([
+        ...prev.filter((ord) => ord.id !== order.id),
+      ]);
+    })
   }
 
   getNextOrderId(order: Order, direction: number) {
