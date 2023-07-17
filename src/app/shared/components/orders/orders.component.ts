@@ -16,7 +16,9 @@ export class OrdersComponent {
   constructor(private orderService: OrderService, private ngZone: NgZone, private router: Router) {}
 
   deleteOrder(order: Order) {
-    this.orderService.deleteOrder(order).then().catch(error => console.log(error));
+    this.orderService.deleteOrder(order).catch(error => {
+      this.deleteOrderError = error;
+    });
   }
 
   handleNavigation() {

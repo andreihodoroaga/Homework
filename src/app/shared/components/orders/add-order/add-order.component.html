@@ -25,6 +25,6 @@
 </form>
 
 <div class="add-order-error" *ngIf="!!errorMessage">
-  <mat-error>There was an error adding your order!</mat-error>
+  <mat-error>{{ errorMessage }}</mat-error>
   <a routerLink="orders">Back to orders</a>
 </div>
