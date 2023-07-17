@@ -25,12 +25,14 @@ export class OrderService {
   addOrder(order: Order) {
     this.dataService.sendData('add-order', order).subscribe({
       next: () => this.getOrders(),
+      error: (response) => console.log(response.error)
     });
   }
 
   deleteOrder(order: Order) {
     this.dataService.deleteData('delete-order', order.id).subscribe({
       next: () => this.getOrders(),
+      error: (response) => console.log(response.error)
     });
   }
 
