@@ -7,7 +7,7 @@ const isDev = process.env['NODE_ENV'] !== 'production';
 const isMac = process.platform === 'darwin';
 
 function createWindow() {
-  const window = new BrowserWindow({
+  const mainWindow = new BrowserWindow({
     height: 600,
     width: isDev ? 800 : 500,
     webPreferences: {
@@ -17,9 +17,9 @@ function createWindow() {
   });
 
   if (isDev) {
-    window.loadURL('http://localhost:4200');
+    mainWindow.loadURL('http://localhost:4200');
   } else {
-    window.loadURL(
+    mainWindow.loadURL(
       url.format({
         pathname: path.join(__dirname, `/dist/homework/index.html`),
         protocol: 'file:',
@@ -29,17 +29,12 @@ function createWindow() {
   }
 
   if (isDev) {
-    window.webContents.openDevTools();
+    mainWindow.webContents.openDevTools();
   }
-
-  return window;
 }
 
-let mainWindow;
-let secondaryWindow;
-
 app.whenReady().then(() => {
-  mainWindow = createWindow();
+  createWindow();
   setCustomMenu();
 
   app.on('activate', function () {
@@ -55,9 +50,7 @@ const menuTemplate = [
       {
         label: 'New Window',
         accelerator: 'CmdOrCtrl+N',
-        click: () => {
-          secondaryWindow = createWindow();
-        },
+        click: createWindow,
       },
       { role: 'quit' },
     ],
