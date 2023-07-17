@@ -1,4 +1,4 @@
-<form [formGroup]="orderForm" (ngSubmit)="onSubmit()" class="add-order-form">
+<form [formGroup]="orderForm" (ngSubmit)="onSubmit()" class="add-order-form" *ngIf="!errorMessage">
   <mat-form-field appearance="fill">
     <mat-label>Order ID</mat-label>
     <input matInput formControlName="id" type="text" />
@@ -23,3 +23,8 @@
 
   <button mat-raised-button color="accent" type="submit" [disabled]="!orderForm.valid">Send Order</button>
 </form>
+
+<div class="add-order-error" *ngIf="!!errorMessage">
+  <mat-error>There was an error adding your order!</mat-error>
+  <a routerLink="orders">Back to orders</a>
+</div>

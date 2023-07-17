@@ -6,3 +6,13 @@
   margin: 0 auto;
   padding: 16px;
 }
+
+.add-order-error {
+  padding: 1rem;
+  font-size: 1.25rem;
+
+  a {
+    margin-top: 1rem;
+    display: block;
+  }
+}
