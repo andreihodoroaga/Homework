@@ -34,11 +34,7 @@ export class DataService {
     });
   }
 
-  sendData(signal: string, data: any) {
-    return from(this.ipcRenderer!.invoke(signal, data));
-  }
-
-  deleteData(signal: string, data: any) {
-    return from(this.ipcRenderer!.invoke(signal, data));
+  sendSignal(signal: string, data: any) {
+    return this.ipcRenderer!.invoke(signal, data);
   }
 }
