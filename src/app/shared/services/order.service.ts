@@ -13,8 +13,8 @@ export class OrderService {
   constructor(private readonly dataService: DataService) {
     this.dataService.refresh$.subscribe(() => {
       this.fetchOrders();
-    })
-   }
+    });
+  }
 
   fetchOrders() {
     this.dataService.getData('get-orders').subscribe((data) => {
@@ -22,18 +22,26 @@ export class OrderService {
     });
   }
 
-  addOrder(order: Order) {
-    this.dataService.sendData('add-order', order).subscribe({
-      next: () => this.fetchOrders(),
-      error: (response) => console.log(response.error)
-    });
+  async addOrder(order: Order): Promise<string> {
+    try {
+      await this.dataService.sendSignal('add-order', order);
+      this.fetchOrders();
+      return 'Success';
+    } catch (error) {
+      console.log(error);
+      return "Error adding the order";
+    }
   }
 
-  deleteOrder(order: Order) {
-    this.dataService.deleteData('delete-order', order.id).subscribe({
-      next: () => this.fetchOrders(),
-      error: (response) => console.log(response.error)
-    });
+  async deleteOrder(order: Order) {
+    try {
+      await this.dataService.sendSignal('delete-order', order.id);
+      this.fetchOrders();
+      return 'Success';
+    } catch (error) {
+      console.log(error);
+      return 'Error deleting the order!';
+    }
   }
 
   getNextOrderId(order: Order, direction: number) {
