@@ -116,9 +116,7 @@ ipcMain.handle('delete-order', (event, orderIdToDelete) => {
 
 function reloadOpenWindows() {
   for (let window of BrowserWindow.getAllWindows()) {
-    if (window !== mainWindow) {
-      window.webContents.send('reload-content');
-    }
+    window.webContents.send('reload-content');
   }
 }
 
