@@ -55,7 +55,6 @@ export class AddOrderComponent implements OnInit {
 
   addConfiguredSculpture(configuredSculpture: ConfiguredSculpture) {
     this._configuredSculptures.push(configuredSculpture);
-    // update the value in the form control as well
     this.orderForm
       .get('configuredSculptures')
       ?.setValue(this._configuredSculptures);
@@ -65,7 +64,6 @@ export class AddOrderComponent implements OnInit {
     this._configuredSculptures = this._configuredSculptures.filter(
       (sculpture) => sculpture !== configuredSculpture
     );
-    // update the value in the form control as well
     this.orderForm
       .get('configuredSculptures')
       ?.setValue(this._configuredSculptures);

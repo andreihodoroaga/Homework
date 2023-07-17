@@ -26,7 +26,6 @@ export class EditOrderComponent {
   getOrder() {
     this.orderService.orders$
       .pipe(
-        // delay(2000),
         map((orders) =>
           orders.find(
             (ord) => ord.id === this.activatedRoute.snapshot.params['id']

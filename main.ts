@@ -57,7 +57,6 @@ const menuTemplate = [
   },
 ];
 
-// Set the custom menu
 function setCustomMenu() {
   const menu = Menu.buildFromTemplate(menuTemplate);
   Menu.setApplicationMenu(menu);
