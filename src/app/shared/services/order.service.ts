@@ -12,11 +12,11 @@ export class OrderService {
 
   constructor(private readonly dataService: DataService) {
     this.dataService.refresh$.subscribe(() => {
-      this.getOrders();
+      this.fetchOrders();
     })
    }
 
-  getOrders() {
+  fetchOrders() {
     this.dataService.getData('get-orders').subscribe((data) => {
       this.ordersData$.next(data as Order[]);
     });
@@ -24,14 +24,14 @@ export class OrderService {
 
   addOrder(order: Order) {
     this.dataService.sendData('add-order', order).subscribe({
-      next: () => this.getOrders(),
+      next: () => this.fetchOrders(),
       error: (response) => console.log(response.error)
     });
   }
 
   deleteOrder(order: Order) {
     this.dataService.deleteData('delete-order', order.id).subscribe({
-      next: () => this.getOrders(),
+      next: () => this.fetchOrders(),
       error: (response) => console.log(response.error)
     });
   }

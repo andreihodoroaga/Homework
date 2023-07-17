@@ -40,7 +40,7 @@ export class ConfiguredSculptureFormComponent implements ControlValueAccessor, O
   }
 
   ngOnInit(): void {
-    this.sculptureService.getSculptures();
+    this.sculptureService.fetchSculptures();
   }
 
   writeValue(value: ConfiguredSculpture): void {
