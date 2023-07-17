@@ -71,7 +71,7 @@ export class AddOrderComponent implements OnInit {
       ?.setValue(this._configuredSculptures);
   }
 
-  onSubmit() {
+  async onSubmit() {
     const { id, buyerName, buyerDeliveryAddress } = this.orderForm.value;
 
     if (id && buyerName && buyerDeliveryAddress && this.configuredSculptures) {
@@ -82,15 +82,12 @@ export class AddOrderComponent implements OnInit {
         configuredSculptures: this.configuredSculptures,
       };
 
-      this.orderService
-        .addOrder(order)
-        .then(() => {
-          this.router.navigate(['orders']);
-        })
-        .catch((errorMessage) => {
-          this.errorMessage = errorMessage;
-        });
+      try {
+        await this.orderService.addOrder(order);
+        this.router.navigate(['orders']);
+      } catch (errorMessage) {
+        this.errorMessage = errorMessage as string;
+      }
     }
-
   }
 }
