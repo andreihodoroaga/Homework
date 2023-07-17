@@ -22,7 +22,7 @@ export class OrderService {
     });
   }
 
-  async addOrder(order: Order): Promise<string> {
+  async addOrder(order: Order) {
     try {
       await this.dataService.sendSignal('add-order', order);
       this.fetchOrders();
