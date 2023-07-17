@@ -1,23 +1,29 @@
-import { Injectable } from '@angular/core';
-import { ReplaySubject, first, map } from 'rxjs';
+import { Injectable, OnDestroy } from '@angular/core';
+import { ReplaySubject, Subject, first, map, takeUntil } from 'rxjs';
 import { Order } from '../models/order';
 import { DataService } from './data.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class OrderService {
+export class OrderService implements OnDestroy {
   private ordersData$ = new ReplaySubject<Order[]>(1);
   orders$ = this.ordersData$.asObservable();
+  private destroyed$ = new Subject<void>();
 
   constructor(private readonly dataService: DataService) {
-    this.dataService.refresh$.subscribe(() => {
+    this.dataService.refresh$.pipe(takeUntil(this.destroyed$)).subscribe(() => {
       this.fetchOrders();
     });
   }
 
+  ngOnDestroy(): void {
+    this.destroyed$.next();
+    this.destroyed$.complete();
+  }
+
   fetchOrders() {
-    this.dataService.getData('get-orders').subscribe((data) => {
+    this.dataService.getData('get-orders').pipe(takeUntil(this.destroyed$)).subscribe((data) => {
       this.ordersData$.next(data as Order[]);
     });
   }

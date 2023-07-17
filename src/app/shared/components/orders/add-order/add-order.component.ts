@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfiguredSculpture } from 'src/app/shared/models/configured-sculpture';
 import { Order } from 'src/app/shared/models/order';
@@ -6,6 +6,7 @@ import { emptyArrayValidator } from 'src/app/shared/directives/emptyArrayValidat
 import { Router } from '@angular/router';
 import { OrderService } from 'src/app/shared/services/order.service';
 import { totalWeightValidator } from 'src/app/shared/directives/totalWeightValidator.directive';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-add-order',
@@ -13,10 +14,11 @@ import { totalWeightValidator } from 'src/app/shared/directives/totalWeightValid
   styleUrls: ['./add-order.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AddOrderComponent implements OnInit {
+export class AddOrderComponent implements OnInit, OnDestroy {
   private _configuredSculptures: ConfiguredSculpture[] = [];
   exceededWeightError: string | null = null;
   errorMessage: string = '';
+  private destroyed$ = new Subject<void>();
 
   orderForm = new FormGroup({
     id: new FormControl('', Validators.required),
@@ -35,7 +37,7 @@ export class AddOrderComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.orderForm.valueChanges.subscribe(() => {
+    this.orderForm.valueChanges.pipe(takeUntil(this.destroyed$)).subscribe(() => {
       if (
         this.orderForm.controls['configuredSculptures'].errors?.[
           'invalidWeight'
@@ -47,6 +49,11 @@ export class AddOrderComponent implements OnInit {
         this.exceededWeightError = null;
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed$.next();
+    this.destroyed$.complete();
   }
 
   public get configuredSculptures(): ConfiguredSculpture[] {
