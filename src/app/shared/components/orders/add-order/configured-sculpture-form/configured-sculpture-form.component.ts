@@ -1,5 +1,6 @@
-import { Component, forwardRef, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
+import { Component, forwardRef, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Subject, takeUntil } from 'rxjs';
 import { ConfiguredSculpture } from 'src/app/shared/models/configured-sculpture';
 import { Material } from 'src/app/shared/models/material';
 import { Sculpture } from 'src/app/shared/models/sculpture';
@@ -18,11 +19,12 @@ import { SculptureService } from 'src/app/shared/services/sculpture.service';
     },
   ],
 })
-export class ConfiguredSculptureFormComponent implements ControlValueAccessor, OnInit {
+export class ConfiguredSculptureFormComponent implements ControlValueAccessor, OnInit, OnDestroy {
   value!: ConfiguredSculpture;
   disabled = false;
   sculptures$ = this.sculptureService.sculptureList$;
   materials = Object.keys(Material).slice(3);
+  private destroyed$ = new Subject<void>();
 
   onChange: (value: ConfiguredSculpture) => void = () => {};
   onTouched: () => void = () => {};
@@ -35,12 +37,17 @@ export class ConfiguredSculptureFormComponent implements ControlValueAccessor, O
   @Output() removeConfiguredSculptureEvent = new EventEmitter<ConfiguredSculpture>();
 
   constructor(private sculptureService: SculptureService) {
-    this.sculptureControl.valueChanges.subscribe(() => this.updateValue());
-    this.materialControl.valueChanges.subscribe(() => this.updateValue());
+    this.sculptureControl.valueChanges.pipe(takeUntil(this.destroyed$)).subscribe(() => this.updateValue());
+    this.materialControl.valueChanges.pipe(takeUntil(this.destroyed$)).subscribe(() => this.updateValue());
   }
 
   ngOnInit(): void {
     this.sculptureService.fetchSculptures();
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed$.next();
+    this.destroyed$.complete();
   }
 
   writeValue(value: ConfiguredSculpture): void {

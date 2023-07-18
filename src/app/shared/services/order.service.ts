@@ -1,39 +1,51 @@
-import { Injectable } from '@angular/core';
-import { ReplaySubject, first, map } from 'rxjs';
+import { Injectable, OnDestroy } from '@angular/core';
+import { ReplaySubject, Subject, first, map, takeUntil } from 'rxjs';
 import { Order } from '../models/order';
 import { DataService } from './data.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class OrderService {
+export class OrderService implements OnDestroy {
   private ordersData$ = new ReplaySubject<Order[]>(1);
   orders$ = this.ordersData$.asObservable();
+  private destroyed$ = new Subject<void>();
 
   constructor(private readonly dataService: DataService) {
-    this.dataService.refresh$.subscribe(() => {
+    this.dataService.refresh$.pipe(takeUntil(this.destroyed$)).subscribe(() => {
       this.fetchOrders();
-    })
-   }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed$.next();
+    this.destroyed$.complete();
+  }
 
   fetchOrders() {
-    this.dataService.getData('get-orders').subscribe((data) => {
+    this.dataService.getData('get-orders').pipe(takeUntil(this.destroyed$)).subscribe((data) => {
       this.ordersData$.next(data as Order[]);
     });
   }
 
-  addOrder(order: Order) {
-    this.dataService.sendData('add-order', order).subscribe({
-      next: () => this.fetchOrders(),
-      error: (response) => console.log(response.error)
-    });
+  async addOrder(order: Order) {
+    try {
+      await this.dataService.sendSignal('add-order', order);
+      this.fetchOrders();
+      return 'Success';
+    } catch (error) {
+      return "Error adding the order";
+    }
   }
 
-  deleteOrder(order: Order) {
-    this.dataService.deleteData('delete-order', order.id).subscribe({
-      next: () => this.fetchOrders(),
-      error: (response) => console.log(response.error)
-    });
+  async deleteOrder(order: Order) {
+    try {
+      await this.dataService.sendSignal('delete-order', order.id);
+      this.fetchOrders();
+      return 'Success';
+    } catch (error) {
+      return 'Error deleting the order!';
+    }
   }
 
   getNextOrderId(order: Order, direction: number) {

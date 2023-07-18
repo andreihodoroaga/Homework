@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, NgZone } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { delay, map, tap } from 'rxjs';
+import { Subject, map, takeUntil, tap } from 'rxjs';
 import { Order } from 'src/app/shared/models/order';
 import { OrderService } from 'src/app/shared/services/order.service';
 
@@ -10,8 +10,9 @@ import { OrderService } from 'src/app/shared/services/order.service';
   styleUrls: ['./edit-order.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EditOrderComponent {
+export class EditOrderComponent implements OnInit, OnDestroy {
   order!: Order;
+  private destroyed$ = new Subject<void>();
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -23,10 +24,15 @@ export class EditOrderComponent {
     this.getOrder();
   }
 
+  ngOnDestroy(): void {
+    this.destroyed$.next();
+    this.destroyed$.complete();
+  }
+
   getOrder() {
     this.orderService.orders$
       .pipe(
-        // delay(2000),
+        takeUntil(this.destroyed$),
         map((orders) =>
           orders.find(
             (ord) => ord.id === this.activatedRoute.snapshot.params['id']

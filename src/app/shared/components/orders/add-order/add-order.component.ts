@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfiguredSculpture } from 'src/app/shared/models/configured-sculpture';
 import { Order } from 'src/app/shared/models/order';
@@ -6,6 +6,7 @@ import { emptyArrayValidator } from 'src/app/shared/directives/emptyArrayValidat
 import { Router } from '@angular/router';
 import { OrderService } from 'src/app/shared/services/order.service';
 import { totalWeightValidator } from 'src/app/shared/directives/totalWeightValidator.directive';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-add-order',
@@ -13,9 +14,11 @@ import { totalWeightValidator } from 'src/app/shared/directives/totalWeightValid
   styleUrls: ['./add-order.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AddOrderComponent implements OnInit {
+export class AddOrderComponent implements OnInit, OnDestroy {
   private _configuredSculptures: ConfiguredSculpture[] = [];
   exceededWeightError: string | null = null;
+  errorMessage: string = '';
+  private destroyed$ = new Subject<void>();
 
   orderForm = new FormGroup({
     id: new FormControl('', Validators.required),
@@ -24,7 +27,7 @@ export class AddOrderComponent implements OnInit {
     configuredSculpture: new FormControl(null, Validators.required),
     configuredSculptures: new FormControl(this._configuredSculptures, [
       emptyArrayValidator,
-      totalWeightValidator
+      totalWeightValidator,
     ]),
   });
 
@@ -34,14 +37,23 @@ export class AddOrderComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Assuming you have the ngOnInit method, add this line:
-    this.orderForm.valueChanges.subscribe(() => {
-      if(this.orderForm.controls['configuredSculptures'].errors?.['invalidWeight']) {
-        this.exceededWeightError = "We only ship a maximum of 100 kg of sculptures! (our courier needs to hit the gym more)"
+    this.orderForm.valueChanges.pipe(takeUntil(this.destroyed$)).subscribe(() => {
+      if (
+        this.orderForm.controls['configuredSculptures'].errors?.[
+          'invalidWeight'
+        ]
+      ) {
+        this.exceededWeightError =
+          'We only ship a maximum of 100 kg of sculptures! (our courier needs to hit the gym more)';
       } else {
         this.exceededWeightError = null;
       }
-  });
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed$.next();
+    this.destroyed$.complete();
   }
 
   public get configuredSculptures(): ConfiguredSculpture[] {
@@ -50,7 +62,6 @@ export class AddOrderComponent implements OnInit {
 
   addConfiguredSculpture(configuredSculpture: ConfiguredSculpture) {
     this._configuredSculptures.push(configuredSculpture);
-    // update the value in the form control as well
     this.orderForm
       .get('configuredSculptures')
       ?.setValue(this._configuredSculptures);
@@ -60,13 +71,12 @@ export class AddOrderComponent implements OnInit {
     this._configuredSculptures = this._configuredSculptures.filter(
       (sculpture) => sculpture !== configuredSculpture
     );
-    // update the value in the form control as well
     this.orderForm
       .get('configuredSculptures')
       ?.setValue(this._configuredSculptures);
   }
 
-  onSubmit() {
+  async onSubmit() {
     const { id, buyerName, buyerDeliveryAddress } = this.orderForm.value;
 
     if (id && buyerName && buyerDeliveryAddress && this.configuredSculptures) {
@@ -77,9 +87,12 @@ export class AddOrderComponent implements OnInit {
         configuredSculptures: this.configuredSculptures,
       };
 
-      this.orderService.addOrder(order);
+      try {
+        await this.orderService.addOrder(order);
+        this.router.navigate(['orders']);
+      } catch (errorMessage) {
+        this.errorMessage = errorMessage as string;
+      }
     }
-
-    this.router.navigate(['orders']);
   }
 }

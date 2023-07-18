@@ -11,11 +11,14 @@ import { Router } from '@angular/router';
 })
 export class OrdersComponent {
   orders$ = this.orderService.orders$;
+  deleteOrderError = '';
 
   constructor(private orderService: OrderService, private ngZone: NgZone, private router: Router) {}
 
   deleteOrder(order: Order) {
-    this.orderService.deleteOrder(order);
+    this.orderService.deleteOrder(order).catch(error => {
+      this.deleteOrderError = error;
+    });
   }
 
   handleNavigation() {
