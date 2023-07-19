@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, NgZone } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { OrderService } from '../../services/order.service';
 import { Order } from '../../models/order';
 import { Router } from '@angular/router';
@@ -13,13 +13,16 @@ export class OrdersComponent {
   orders$ = this.orderService.orders$;
   deleteOrderError = '';
 
-  constructor(private orderService: OrderService, private ngZone: NgZone, private router: Router) {}
+  constructor(private orderService: OrderService, private router: Router) {}
 
-  deleteOrder(order: Order) {
-    this.orderService.deleteOrder(order).catch(error => {
-      this.deleteOrderError = error;
-    });
+  async deleteOrder(order: Order) {
+    try {
+      await this.orderService.deleteOrder(order);
+    } catch (error) {
+      this.deleteOrderError = error as string;
+    }
   }
+
 
   handleNavigation() {
     this.router.navigate(["orders/add"])
