@@ -5,15 +5,16 @@
         <mat-card-content>
           <div class="order-content">
             <a [routerLink]="['./' + order.id]">{{ order.id }}</a>
-            <button mat-mini-fab color="warn" aria-label="Delete order" (click)="deleteOrder(order)">
+            <button mat-mini-fab color="warn" aria-label="Delete order" class="delete-order-btn" (click)="deleteOrder(order)">
               <mat-icon>delete</mat-icon>
             </button>
           </div>
-          <mat-error *ngIf="!!deleteOrderError">{{ deleteOrderError }}</mat-error>
         </mat-card-content>
       </mat-card>
     </li>
   </ul>
+  <mat-error *ngIf="!!deleteOrderError">{{ deleteOrderError }}</mat-error>
+  <br />
 
   <button mat-raised-button color="primary" class="add-order-btn" (click)="handleNavigation()">
     Add new order

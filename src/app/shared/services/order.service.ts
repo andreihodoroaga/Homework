@@ -23,29 +23,36 @@ export class OrderService implements OnDestroy {
   }
 
   fetchOrders() {
-    this.dataService.getData('get-orders').pipe(takeUntil(this.destroyed$)).subscribe((data) => {
-      this.ordersData$.next(data as Order[]);
-    });
+    this.dataService
+      .getData('get-orders')
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((data) => {
+        this.ordersData$.next(data as Order[]);
+      });
   }
 
   async addOrder(order: Order) {
-    try {
-      await this.dataService.sendSignal('add-order', order);
-      this.fetchOrders();
-      return 'Success';
-    } catch (error) {
-      return "Error adding the order";
-    }
+    return new Promise(async (resolve, reject) => {
+      try {
+        await this.dataService.sendSignal('add-order', order);
+        this.fetchOrders();
+        resolve('Success');
+      } catch (error) {
+        reject('Error adding the order');
+      }
+    });
   }
 
   async deleteOrder(order: Order) {
-    try {
-      await this.dataService.sendSignal('delete-order', order.id);
-      this.fetchOrders();
-      return 'Success';
-    } catch (error) {
-      return 'Error deleting the order!';
-    }
+    return new Promise(async (resolve, reject) => {
+      try {
+        await this.dataService.sendSignal('delete-order', order.id);
+        this.fetchOrders();
+        resolve('Success');
+      } catch (error) {
+        reject('Error deleting the order!');
+      }
+    });
   }
 
   getNextOrderId(order: Order, direction: number) {
