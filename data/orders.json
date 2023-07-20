@@ -1,24 +1,56 @@
 [
   {
-    "id": "sadf",
-    "buyerName": "da",
-    "buyerDeliveryAddress": "sda",
+    "id": "963660c7-45dc-4640-8c41-894d778aa03b",
+    "buyerName": "asda",
+    "buyerDeliveryAddress": "adsda",
     "configuredSculptures": [
       {
         "sculpture": {
-          "id": 1,
-          "name": "Sculpture 1",
-          "basePrice": 100,
-          "baseWeight": 1
+          "id": 2,
+          "name": "Sculpture 2",
+          "basePrice": 200,
+          "baseWeight": 2.5
         },
-        "material": "Wood"
+        "material": "Platinum"
       }
     ]
   },
   {
-    "id": "dsa",
-    "buyerName": "dasxav",
-    "buyerDeliveryAddress": "dasd",
+    "id": "ac4f02be-ae33-451a-90ca-4468589366c1",
+    "buyerName": "asAS",
+    "buyerDeliveryAddress": "ASssda",
+    "configuredSculptures": [
+      {
+        "sculpture": {
+          "id": 2,
+          "name": "Sculpture 2",
+          "basePrice": 200,
+          "baseWeight": 2.5
+        },
+        "material": "Platinum"
+      }
+    ]
+  },
+  {
+    "id": "26affb1d-979b-4eeb-817e-675d1760a3e0",
+    "buyerName": "xasxa",
+    "buyerDeliveryAddress": "ada",
+    "configuredSculptures": [
+      {
+        "sculpture": {
+          "id": 2,
+          "name": "Sculpture 2",
+          "basePrice": 200,
+          "baseWeight": 2.5
+        },
+        "material": "Bronze"
+      }
+    ]
+  },
+  {
+    "id": "9923a7f9-c48a-47de-bb47-4ba4c7ae0a55",
+    "buyerName": "xasxa",
+    "buyerDeliveryAddress": "xasda",
     "configuredSculptures": [
       {
         "sculpture": {
@@ -31,44 +63,12 @@
       },
       {
         "sculpture": {
-          "id": 4,
-          "name": "Sculpture 4",
-          "basePrice": 225,
-          "baseWeight": 0.75
-        },
-        "material": "Platinum"
-      }
-    ]
-  },
-  {
-    "id": "ada",
-    "buyerName": "ada",
-    "buyerDeliveryAddress": "dasd",
-    "configuredSculptures": [
-      {
-        "sculpture": {
-          "id": 1,
-          "name": "Sculpture 1",
-          "basePrice": 100,
-          "baseWeight": 1
+          "id": 3,
+          "name": "Sculpture 3",
+          "basePrice": 300,
+          "baseWeight": 0.5
         },
         "material": "Bronze"
-      }
-    ]
-  },
-  {
-    "id": "dad",
-    "buyerName": "ada",
-    "buyerDeliveryAddress": "axa",
-    "configuredSculptures": [
-      {
-        "sculpture": {
-          "id": 2,
-          "name": "Sculpture 2",
-          "basePrice": 200,
-          "baseWeight": 2.5
-        },
-        "material": "Platinum"
       }
     ]
   }

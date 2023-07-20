@@ -1,10 +1,13 @@
 .add-order-form {
+  max-width: 500px;
+  margin: 1rem auto 0;
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  max-width: 500px;
-  margin: 0 auto;
-  padding: 16px;
+
+  .add-order-btn {
+    margin-top: 0.5rem;
+  }
 }
 
 .add-order-error {

@@ -1,6 +1,7 @@
 mat-card {
   max-width: 500px;
   margin: 1rem auto;
+  margin-top: 1rem;
   padding: 1rem;
 }
 
@@ -16,7 +17,7 @@ mat-card-content h3 {
 }
 
 mat-card-footer {
-  margin-top: 1rem;
+  margin-top: 2rem;
   display: flex;
   justify-content: space-between;
 }
