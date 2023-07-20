@@ -82,7 +82,11 @@ const handleOrderOperation = async (operation, event, orderData) => {
 
     let updatedOrders;
     if (operation === 'add') {
-      updatedOrders = [...orders, orderData];
+      if(!orders.find(order => order.id === orderData.id)) {
+        updatedOrders = [...orders, orderData];
+      } else {
+        updatedOrders = orders.map(order => order.id === orderData.id ? orderData : order);
+      }
     } else if (operation === 'delete') {
       const orderToUpdate = orders.find(order => order.id === orderData)
       if (!orderToUpdate) {

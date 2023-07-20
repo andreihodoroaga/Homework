@@ -1,7 +1,7 @@
 <form [formGroup]="orderForm" (ngSubmit)="onSubmit()" class="add-order-form" *ngIf="!errorMessage">
   <mat-form-field appearance="fill">
     <mat-label>Order ID</mat-label>
-    <input matInput formControlName="id" type="text" />
+    <input matInput formControlName="id" type="text" [readonly]="!!existingOrder"/>
   </mat-form-field>
 
   <mat-form-field appearance="fill">
@@ -21,7 +21,7 @@
       {{ exceededWeightError }}
     </mat-error>
 
-  <button mat-raised-button color="accent" type="submit" [disabled]="!orderForm.valid">Send Order</button>
+  <button mat-raised-button color="accent" type="submit" [disabled]="!orderForm.valid">{{ formBtnText }}</button>
 </form>
 
 <div class="add-order-error" *ngIf="!!errorMessage">
