@@ -1,4 +1,11 @@
-import { Component, ChangeDetectionStrategy, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  OnInit,
+  OnDestroy,
+  Input,
+  SimpleChanges,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfiguredSculpture } from 'src/app/shared/models/configured-sculpture';
 import { Order } from 'src/app/shared/models/order';
@@ -15,6 +22,9 @@ import { Subject, takeUntil } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddOrderComponent implements OnInit, OnDestroy {
+  @Input()
+  existingOrder!: Order;
+
   private _configuredSculptures: ConfiguredSculpture[] = [];
   exceededWeightError: string | null = null;
   errorMessage: string = '';
@@ -24,7 +34,7 @@ export class AddOrderComponent implements OnInit, OnDestroy {
     id: new FormControl('', Validators.required),
     buyerName: new FormControl('', Validators.required),
     buyerDeliveryAddress: new FormControl('', Validators.required),
-    configuredSculpture: new FormControl(null, Validators.required),
+    configuredSculpture: new FormControl(null),
     configuredSculptures: new FormControl(this._configuredSculptures, [
       emptyArrayValidator,
       totalWeightValidator,
@@ -37,18 +47,34 @@ export class AddOrderComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.orderForm.valueChanges.pipe(takeUntil(this.destroyed$)).subscribe(() => {
-      if (
-        this.orderForm.controls['configuredSculptures'].errors?.[
-          'invalidWeight'
-        ]
-      ) {
-        this.exceededWeightError =
-          'We only ship a maximum of 100 kg of sculptures! (our courier needs to hit the gym more)';
-      } else {
-        this.exceededWeightError = null;
-      }
-    });
+    this.orderForm.valueChanges
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe(() => {
+        if (
+          this.orderForm.controls['configuredSculptures'].errors?.[
+            'invalidWeight'
+          ]
+        ) {
+          this.exceededWeightError =
+            'We only ship a maximum of 100 kg of sculptures! (our courier needs to hit the gym more)';
+        } else {
+          this.exceededWeightError = null;
+        }
+      });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['existingOrder'] && changes['existingOrder'].currentValue) {
+      this._configuredSculptures = this.existingOrder.configuredSculptures;
+      this.orderForm.patchValue({ id: this.existingOrder.id });
+      this.orderForm.patchValue({ buyerName: this.existingOrder.buyerName });
+      this.orderForm.patchValue({
+        buyerDeliveryAddress: this.existingOrder.buyerDeliveryAddress,
+      });
+      this.orderForm.patchValue({
+        configuredSculptures: this.existingOrder.configuredSculptures,
+      });
+    }
   }
 
   ngOnDestroy(): void {
@@ -58,6 +84,10 @@ export class AddOrderComponent implements OnInit, OnDestroy {
 
   public get configuredSculptures(): ConfiguredSculpture[] {
     return this._configuredSculptures;
+  }
+
+  public get formBtnText() {
+    return `${this.existingOrder ? 'Save' : 'Send'} Order`;
   }
 
   addConfiguredSculpture(configuredSculpture: ConfiguredSculpture) {
