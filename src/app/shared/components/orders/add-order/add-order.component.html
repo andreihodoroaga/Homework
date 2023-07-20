@@ -21,7 +21,7 @@
       {{ exceededWeightError }}
     </mat-error>
 
-  <button mat-raised-button color="accent" type="submit" [disabled]="!orderForm.valid">{{ formBtnText }}</button>
+  <button mat-raised-button color="accent" type="submit" class="add-order-btn" [disabled]="!orderForm.valid">{{ formBtnText }}</button>
 </form>
 
 <div class="add-order-error" *ngIf="!!errorMessage">

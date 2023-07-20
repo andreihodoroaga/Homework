@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 import { OrderService } from 'src/app/shared/services/order.service';
 import { totalWeightValidator } from 'src/app/shared/directives/totalWeightValidator.directive';
 import { Subject, takeUntil } from 'rxjs';
+import * as uuid from 'uuid';
 
 @Component({
   selector: 'app-add-order',
@@ -31,7 +32,7 @@ export class AddOrderComponent implements OnInit, OnDestroy {
   private destroyed$ = new Subject<void>();
 
   orderForm = new FormGroup({
-    id: new FormControl('', Validators.required),
+    id: new FormControl(uuid.v4(), Validators.required),
     buyerName: new FormControl('', Validators.required),
     buyerDeliveryAddress: new FormControl('', Validators.required),
     configuredSculpture: new FormControl(null),
