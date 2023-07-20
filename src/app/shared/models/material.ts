@@ -1,7 +1,7 @@
 export enum Material {
-  Wood,
-  Bronze,
-  Platinum,
+  Wood = 'Wood',
+  Bronze = 'Bronze',
+  Platinum = 'Platinum',
 }
 
 export const materialPriceMultipliers: Record<Material, number> = {

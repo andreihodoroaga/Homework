@@ -1,7 +1,7 @@
 <form [formGroup]="orderForm" (ngSubmit)="onSubmit()" class="add-order-form" *ngIf="!errorMessage">
   <mat-form-field appearance="fill">
     <mat-label>Order ID</mat-label>
-    <input matInput formControlName="id" type="text" [readonly]="!!existingOrder"/>
+    <input matInput formControlName="id" type="text" [readonly]="!!existingOrder" />
   </mat-form-field>
 
   <mat-form-field appearance="fill">
@@ -17,11 +17,10 @@
   <app-configured-sculpture-form formControlName="configuredSculpture" [configuredSculptures]="configuredSculptures"
     (newConfiguredSculptureEvent)="addConfiguredSculpture($event)"
     (removeConfiguredSculptureEvent)="removeConfiguredSculpture($event)"></app-configured-sculpture-form>
-    <mat-error *ngIf="exceededWeightError">
-      {{ exceededWeightError }}
-    </mat-error>
+  <mat-error *ngIf="exceededWeightError">{{ exceededWeightError }}</mat-error>
 
-  <button mat-raised-button color="accent" type="submit" class="add-order-btn" [disabled]="!orderForm.valid">{{ formBtnText }}</button>
+  <button mat-raised-button color="accent" type="submit" class="add-order-btn" [disabled]="!orderForm.valid">{{
+    formBtnText }}</button>
 </form>
 
 <div class="add-order-error" *ngIf="!!errorMessage">

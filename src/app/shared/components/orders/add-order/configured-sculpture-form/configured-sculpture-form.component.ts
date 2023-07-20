@@ -15,7 +15,7 @@ import {
 } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import { ConfiguredSculpture } from 'src/app/shared/models/configured-sculpture';
-import { Material } from 'src/app/shared/models/material';
+import { Material, materialPriceMultipliers, materialWeightMultipliers } from 'src/app/shared/models/material';
 import { Sculpture } from 'src/app/shared/models/sculpture';
 import { SculptureService } from 'src/app/shared/services/sculpture.service';
 
@@ -38,7 +38,7 @@ export class ConfiguredSculptureFormComponent
   value!: ConfiguredSculpture;
   disabled = false;
   sculptures$ = this.sculptureService.sculptureList$;
-  materials = Object.keys(Material).slice(3);
+  materials = Object.keys(Material);
   private destroyed$ = new Subject<void>();
 
   onChange: (value: ConfiguredSculpture) => void = () => {};
@@ -69,6 +69,18 @@ export class ConfiguredSculptureFormComponent
   ngOnDestroy(): void {
     this.destroyed$.next();
     this.destroyed$.complete();
+  }
+
+  public get totalSculpturesWeight() {
+    return this.configuredSculptures
+      .map((configuredSculpture) => configuredSculpture.sculpture.baseWeight * materialWeightMultipliers[configuredSculpture.material])
+      .reduce((partialSum, a) => partialSum + a, 0);
+  }
+
+  public get totalSculpturesPrice() {
+    return this.configuredSculptures
+    .map((configuredSculpture) => configuredSculpture.sculpture.basePrice * materialPriceMultipliers[configuredSculpture.material])
+    .reduce((partialSum, a) => partialSum + a, 0);
   }
 
   writeValue(value: ConfiguredSculpture): void {

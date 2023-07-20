@@ -4,6 +4,14 @@
 
 .configured-sculptures-container {
   margin-top: 1rem;
+
+  .configured-sculptures-details {
+    display: flex;
+    margin-top: 0.75rem;
+    justify-content: space-between;
+    font-size: 1.125rem;
+    color: #666;
+  }
 }
 
 mat-chip-row {
