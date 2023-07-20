@@ -1,7 +1,7 @@
 {
   "name": "homework",
   "version": "0.0.0",
-  "main": "main.ts",
+  "main": "main.js",
   "scripts": {
     "ng": "ng",
     "start": "concurrently \"npm run electron:start\" \"ng serve\"",

@@ -1,5 +1,18 @@
-import { Component, forwardRef, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
-import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
+import {
+  Component,
+  forwardRef,
+  OnInit,
+  ChangeDetectionStrategy,
+  Input,
+  Output,
+  EventEmitter,
+  OnDestroy,
+} from '@angular/core';
+import {
+  ControlValueAccessor,
+  FormControl,
+  NG_VALUE_ACCESSOR,
+} from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import { ConfiguredSculpture } from 'src/app/shared/models/configured-sculpture';
 import { Material } from 'src/app/shared/models/material';
@@ -19,7 +32,9 @@ import { SculptureService } from 'src/app/shared/services/sculpture.service';
     },
   ],
 })
-export class ConfiguredSculptureFormComponent implements ControlValueAccessor, OnInit, OnDestroy {
+export class ConfiguredSculptureFormComponent
+  implements ControlValueAccessor, OnInit, OnDestroy
+{
   value!: ConfiguredSculpture;
   disabled = false;
   sculptures$ = this.sculptureService.sculptureList$;
@@ -33,12 +48,18 @@ export class ConfiguredSculptureFormComponent implements ControlValueAccessor, O
   materialControl = new FormControl();
 
   @Input() configuredSculptures: ConfiguredSculpture[] = [];
-  @Output() newConfiguredSculptureEvent = new EventEmitter<ConfiguredSculpture>();
-  @Output() removeConfiguredSculptureEvent = new EventEmitter<ConfiguredSculpture>();
+  @Output() newConfiguredSculptureEvent =
+    new EventEmitter<ConfiguredSculpture>();
+  @Output() removeConfiguredSculptureEvent =
+    new EventEmitter<ConfiguredSculpture>();
 
   constructor(private sculptureService: SculptureService) {
-    this.sculptureControl.valueChanges.pipe(takeUntil(this.destroyed$)).subscribe(() => this.updateValue());
-    this.materialControl.valueChanges.pipe(takeUntil(this.destroyed$)).subscribe(() => this.updateValue());
+    this.sculptureControl.valueChanges
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe(() => this.updateValue());
+    this.materialControl.valueChanges
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe(() => this.updateValue());
   }
 
   ngOnInit(): void {
@@ -53,7 +74,9 @@ export class ConfiguredSculptureFormComponent implements ControlValueAccessor, O
   writeValue(value: ConfiguredSculpture): void {
     if (value) {
       this.value = value;
-      this.sculptureControl.setValue(this.value.sculpture, { emitEvent: false });
+      this.sculptureControl.setValue(this.value.sculpture, {
+        emitEvent: false,
+      });
       this.materialControl.setValue(this.value.material, { emitEvent: false });
     }
   }
@@ -73,19 +96,17 @@ export class ConfiguredSculptureFormComponent implements ControlValueAccessor, O
   updateValue(): void {
     this.value = {
       sculpture: this.sculptureControl.value,
-      material: this.materialControl.value
+      material: this.materialControl.value,
     };
     this.onChange(this.value);
     this.onTouched();
   }
 
   onSubmit(sculpture: Sculpture, material: Material) {
-    const configuredSculpture: ConfiguredSculpture = {
+    this.newConfiguredSculptureEvent.emit({
       sculpture,
-      material
-    }
-
-    this.newConfiguredSculptureEvent.emit(configuredSculpture);
+      material,
+    });
   }
 
   removeConfiguredSculpture(configuredSculpture: ConfiguredSculpture) {
