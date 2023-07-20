@@ -13,7 +13,7 @@
       </mat-card>
     </li>
   </ul>
-  <mat-error *ngIf="!!deleteOrderError">{{ deleteOrderError }}</mat-error>
+  <mat-error *ngIf="!!deleteOrderMessage">{{ deleteOrderMessage }}</mat-error>
   <br />
 
   <button mat-raised-button color="primary" class="add-order-btn" (click)="handleNavigation()">

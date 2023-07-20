@@ -44,15 +44,12 @@ export class OrderService implements OnDestroy {
   }
 
   async deleteOrder(order: Order) {
-    return new Promise(async (resolve, reject) => {
-      try {
-        await this.dataService.sendSignal('delete-order', order.id);
-        this.fetchOrders();
-        resolve('Success');
-      } catch (error) {
-        reject('Error deleting the order!');
-      }
-    });
+    const result = await this.dataService.sendSignal('delete-order', order.id);
+    if (result.success) {
+      this.fetchOrders();
+      return '';
+    }
+    return 'Error deleting the order!';
   }
 
   getNextOrderId(order: Order, direction: number) {

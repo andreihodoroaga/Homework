@@ -84,6 +84,10 @@ const handleOrderOperation = async (operation, event, orderData) => {
     if (operation === 'add') {
       updatedOrders = [...orders, orderData];
     } else if (operation === 'delete') {
+      const orderToUpdate = orders.find(order => order.id === orderData)
+      if (!orderToUpdate) {
+        throw new Error('Error deleting the order');
+      }
       updatedOrders = orders.filter((order) => order.id !== orderData);
     } else {
       throw new Error('Invalid operation');
@@ -96,10 +100,6 @@ const handleOrderOperation = async (operation, event, orderData) => {
 
     return { success: true };
   } catch (error) {
-    console.error(
-      `Error ${operation === 'add' ? 'adding' : 'deleting'} "the order:`,
-      error.message
-    );
     return { success: false, error: error.message };
   }
 };

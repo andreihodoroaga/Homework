@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { OrderService } from '../../services/order.service';
 import { Order } from '../../models/order';
 import { Router } from '@angular/router';
@@ -11,18 +11,22 @@ import { Router } from '@angular/router';
 })
 export class OrdersComponent {
   orders$ = this.orderService.orders$;
-  deleteOrderError = '';
+  deleteOrderMessage = '';
 
-  constructor(private orderService: OrderService, private router: Router) {}
+  constructor(private orderService: OrderService, private router: Router, private cdRef: ChangeDetectorRef) { }
 
   async deleteOrder(order: Order) {
-    try {
-      await this.orderService.deleteOrder(order);
-    } catch (error) {
-      this.deleteOrderError = error as string;
-    }
-  }
+    if (this.deleteOrderMessage)
+      return; // avoid spam of the delete button
 
+    const message = await this.orderService.deleteOrder(order);
+    this.deleteOrderMessage = message;
+    this.cdRef.detectChanges();
+    setTimeout(() => {
+      this.deleteOrderMessage = '';
+      this.cdRef.detectChanges();
+    }, 2000)
+  }
 
   handleNavigation() {
     this.router.navigate(["orders/add"])
