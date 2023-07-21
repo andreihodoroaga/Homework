@@ -28,5 +28,17 @@
     "name": "Sculpture 5",
     "basePrice": 175,
     "baseWeight": 1.125
+  },
+  {
+    "id": "6",
+    "name": "Sculpture 6",
+    "basePrice": 20,
+    "baseWeight": 231
+  },
+  {
+    "id": "7",
+    "name": "Sculpture 7",
+    "basePrice": 21,
+    "baseWeight": 2
   }
 ]

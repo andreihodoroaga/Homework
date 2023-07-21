@@ -1,1 +1,29 @@
-<p>add-sculpture works!</p>
+<form [formGroup]="sculptureForm" (ngSubmit)="onSubmit()" class="add-sculpture-form" *ngIf="!errorMessage">
+  <mat-form-field appearance="fill">
+    <mat-label>Order ID</mat-label>
+    <input matInput formControlName="id" type="text" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="name" type="text" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Base Price</mat-label>
+    <input matInput formControlName="basePrice" type="number" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Base Weight</mat-label>
+    <input matInput formControlName="baseWeight" type="number" />
+  </mat-form-field>
+
+  <button mat-raised-button color="accent" type="submit" class="add-sculpture-btn"
+    [disabled]="!sculptureForm.valid">Add sculpture</button>
+</form>
+
+<div class="add-order-error" *ngIf="!!errorMessage">
+  <mat-error>{{ errorMessage }}</mat-error>
+  <a routerLink="orders">Back to sculptures</a>
+</div>
