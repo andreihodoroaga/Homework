@@ -15,6 +15,7 @@ import { OrderService } from 'src/app/shared/services/order.service';
 import { totalWeightValidator } from 'src/app/shared/directives/totalWeightValidator.directive';
 import { Subject, takeUntil } from 'rxjs';
 import * as uuid from 'uuid';
+import { CanComponentDeactivate } from 'src/app/shared/guards/form-incomplete.guard';
 
 @Component({
   selector: 'app-add-order',
@@ -22,7 +23,7 @@ import * as uuid from 'uuid';
   styleUrls: ['./add-order.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AddOrderComponent implements OnInit, OnDestroy {
+export class AddOrderComponent implements OnInit, OnDestroy, CanComponentDeactivate {
   @Input()
   existingOrder!: Order;
 
@@ -30,6 +31,7 @@ export class AddOrderComponent implements OnInit, OnDestroy {
   exceededWeightError: string | null = null;
   errorMessage: string = '';
   private destroyed$ = new Subject<void>();
+  private formSubmitted = false;
 
   orderForm = new FormGroup({
     id: new FormControl(uuid.v4(), Validators.required),
@@ -91,6 +93,10 @@ export class AddOrderComponent implements OnInit, OnDestroy {
     return `${this.existingOrder ? 'Save' : 'Send'} Order`;
   }
 
+  isFormIncomplete(): boolean {
+    return this.orderForm.dirty && !this.formSubmitted;
+  }
+
   addConfiguredSculpture(configuredSculpture: ConfiguredSculpture) {
     this._configuredSculptures.push(configuredSculpture);
     this.orderForm
@@ -120,6 +126,7 @@ export class AddOrderComponent implements OnInit, OnDestroy {
 
       try {
         await this.orderService.addOrder(order);
+        this.formSubmitted = true;
         this.router.navigate(['orders']);
       } catch (errorMessage) {
         this.errorMessage = errorMessage as string;

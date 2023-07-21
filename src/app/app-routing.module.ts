@@ -7,13 +7,18 @@ import { AddOrderComponent } from './shared/components/orders/add-order/add-orde
 import { EditOrderComponent } from './shared/components/orders/edit-order/edit-order.component';
 import { AddSculptureComponent } from './shared/components/sculptures/add-sculpture/add-sculpture.component';
 import { EditSculptureComponent } from './shared/components/sculptures/edit-sculpture/edit-sculpture.component';
+import { FormIncompleteGuard } from './shared/guards/form-incomplete.guard';
 
 const routes: Routes = [
   {
     path: 'orders',
     component: OrdersComponent,
   },
-  { path: 'orders/add', component: AddOrderComponent },
+  {
+    path: 'orders/add',
+    component: AddOrderComponent,
+    canDeactivate: [FormIncompleteGuard]
+  },
   { path: 'orders/:id', component: EditOrderComponent },
   {
     path: 'sculptures',

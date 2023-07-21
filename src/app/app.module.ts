@@ -21,7 +21,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConfiguredSculptureFormComponent } from './shared/components/orders/add-order/configured-sculpture-form/configured-sculpture-form.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatChipsModule } from '@angular/material/chips';
-import { MatList, MatListModule } from '@angular/material/list';
+import { MatListModule } from '@angular/material/list';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from './shared/components/confirm-dialog/confirm-dialog.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +37,7 @@ import { MatList, MatListModule } from '@angular/material/list';
     PageNotFoundComponent,
     NavbarComponent,
     ConfiguredSculptureFormComponent,
+    ConfirmDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -49,7 +52,8 @@ import { MatList, MatListModule } from '@angular/material/list';
     MatSelectModule,
     MatInputModule,
     MatChipsModule,
-    MatListModule
+    MatListModule,
+    MatDialogModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
