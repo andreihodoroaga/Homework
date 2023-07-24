@@ -2,6 +2,8 @@ import {
   Component,
   ChangeDetectionStrategy,
   OnDestroy,
+  Input,
+  SimpleChanges,
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -17,6 +19,9 @@ import { Sculpture } from 'src/app/shared/models/sculpture';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddSculptureComponent implements OnDestroy, CanComponentDeactivate {
+  @Input()
+  existingSculpture!: Sculpture;
+
   errorMessage: string = '';
   private destroyed$ = new Subject<void>();
   private formSubmitted = false;
@@ -32,6 +37,19 @@ export class AddSculptureComponent implements OnDestroy, CanComponentDeactivate 
     private readonly router: Router,
     private readonly sculptureService: SculptureService
   ) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['existingSculpture'] && changes['existingSculpture'].currentValue) {
+      this.sculptureForm.patchValue({ id: this.existingSculpture.id });
+      this.sculptureForm.patchValue({ name: this.existingSculpture.name });
+      this.sculptureForm.patchValue({
+        basePrice: this.existingSculpture.basePrice.toString(),
+      });
+      this.sculptureForm.patchValue({
+        baseWeight: this.existingSculpture.baseWeight.toString(),
+      });
+    }
+  }
 
   ngOnDestroy(): void {
     this.destroyed$.next();

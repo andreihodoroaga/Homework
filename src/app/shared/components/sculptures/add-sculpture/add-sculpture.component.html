@@ -1,7 +1,7 @@
 <form [formGroup]="sculptureForm" (ngSubmit)="onSubmit()" class="add-sculpture-form" *ngIf="!errorMessage">
   <mat-form-field appearance="fill">
     <mat-label>Order ID</mat-label>
-    <input matInput formControlName="id" type="text" />
+    <input matInput formControlName="id" type="text" [readonly]="!!existingSculpture"/>
   </mat-form-field>
 
   <mat-form-field appearance="fill">
