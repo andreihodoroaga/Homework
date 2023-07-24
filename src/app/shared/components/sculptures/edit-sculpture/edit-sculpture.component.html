@@ -1,1 +1,7 @@
-<p>edit-sculpture works!</p>
+<mat-card *ngIf="sculpture">
+  <app-add-sculpture [existingSculpture]="sculpture"></app-add-sculpture>
+  <mat-card-footer>
+    <button mat-stroked-button color="primary" class="prev-sculpture-btn" (click)="handleNavigation(-1)">Previous</button>
+    <button mat-stroked-button color="primary" class="next-sculpture-btn" (click)="handleNavigation(+1)">Next</button>
+  </mat-card-footer>
+</mat-card>

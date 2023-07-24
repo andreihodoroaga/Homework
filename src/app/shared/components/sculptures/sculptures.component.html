@@ -1,6 +1,6 @@
 <div class="sculptures-container">
   <mat-card *ngFor="let sculpture of sculptures$ | async" class="sculpture-card">
-    <mat-card-title>{{ sculpture.id }} - {{ sculpture.name }}</mat-card-title>
+    <mat-card-title><a [routerLink]="['./', sculpture.id]">{{ sculpture.id }} - {{ sculpture.name }}</a></mat-card-title>
     <mat-card-content>
       <p>
         Base Price: €{{ sculpture.basePrice }}

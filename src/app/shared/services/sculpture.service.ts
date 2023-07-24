@@ -1,6 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { IpcRenderer } from 'electron';
-import { BehaviorSubject, Observable, Subject, takeUntil } from 'rxjs';
+import { BehaviorSubject, Subject, first, map, takeUntil } from 'rxjs';
 import { Sculpture } from '../models/sculpture';
 import { DataService } from './data.service';
 
@@ -30,5 +29,22 @@ export class SculptureService implements OnDestroy {
   addSculpture(sculpture: Sculpture) {
     this.dataService.sendSignal('add-sculpture', sculpture);
     this.fetchSculptures();
+  }
+
+
+  getNextSculptureId(sculpture: Sculpture, direction: number) {
+    return this.sculptures$.pipe(
+      first(),
+      map((sculptures) => {
+        const index = sculptures.findIndex((ord) => ord.id === sculpture.id);
+        let nextIndex = index + direction;
+        if (nextIndex === -1) {
+          nextIndex = sculptures.length - 1;
+        } else if (nextIndex === sculptures.length) {
+          nextIndex = 0;
+        }
+        return sculptures[nextIndex].id;
+      })
+    );
   }
 }
