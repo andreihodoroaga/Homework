@@ -24,6 +24,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatListModule } from '@angular/material/list';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from './shared/components/confirm-dialog/confirm-dialog.component';
+import { BaseFormComponent } from './shared/components/base-form/base-form.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { ConfirmDialogComponent } from './shared/components/confirm-dialog/confi
     NavbarComponent,
     ConfiguredSculptureFormComponent,
     ConfirmDialogComponent,
+    BaseFormComponent,
   ],
   imports: [
     BrowserModule,

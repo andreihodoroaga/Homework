@@ -1,0 +1,21 @@
+.add-sculpture-form {
+  max-width: 500px;
+  margin: 1rem auto 0;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+
+  .add-sculpture-btn {
+    margin-top: 0.5rem;
+  }
+}
+
+.add-sculpture-error {
+  padding: 1rem;
+  font-size: 1.25rem;
+
+  a {
+    margin-top: 1rem;
+    display: block;
+  }
+}

@@ -1,10 +1,10 @@
-const { app, BrowserWindow, ipcMain, Menu } = require('electron');
-const fs = require('fs');
-const path = require('path');
-const url = require('url');
+const { app, BrowserWindow, ipcMain, Menu } = require("electron");
+const fs = require("fs");
+const path = require("path");
+const url = require("url");
 
-const isDev = process.env['NODE_ENV'] !== 'production';
-const isMac = process.platform === 'darwin';
+const isDev = process.env["NODE_ENV"] !== "production";
+const isMac = process.platform === "darwin";
 
 function createWindow() {
   const mainWindow = new BrowserWindow({
@@ -17,12 +17,12 @@ function createWindow() {
   });
 
   if (isDev) {
-    mainWindow.loadURL('http://localhost:4200');
+    mainWindow.loadURL("http://localhost:4200");
   } else {
     mainWindow.loadURL(
       url.format({
         pathname: path.join(__dirname, `/dist/homework/index.html`),
-        protocol: 'file:',
+        protocol: "file:",
         slashes: true,
       })
     );
@@ -37,22 +37,22 @@ app.whenReady().then(() => {
   createWindow();
   setCustomMenu();
 
-  app.on('activate', function () {
+  app.on("activate", function () {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
 });
 
 const menuTemplate = [
-  ...(isMac ? [{ role: 'appMenu' }] : []),
+  ...(isMac ? [{ role: "appMenu" }] : []),
   {
-    label: 'File',
+    label: "File",
     submenu: [
       {
-        label: 'New Window',
-        accelerator: 'CmdOrCtrl+N',
+        label: "New Window",
+        accelerator: "CmdOrCtrl+N",
         click: createWindow,
       },
-      { role: 'quit' },
+      { role: "quit" },
     ],
   },
 ];
@@ -74,31 +74,33 @@ ipcMain.handle("get-orders", (event, args) => {
   return ordersData;
 });
 
-const handleOrderOperation = async (operation, event, orderData) => {
+const handleOperation = async (operation, event, objectData, objectType) => {
   try {
-    const dataPath = path.join(__dirname, 'data', 'orders.json');
-    const ordersData = fs.readFileSync(dataPath, 'utf-8');
-    const orders = JSON.parse(ordersData);
+    const dataPath = path.join(__dirname, "data", `${objectType}s.json`);
+    const objectsData = fs.readFileSync(dataPath, "utf-8");
+    const objects = JSON.parse(objectsData);
 
-    let updatedOrders;
-    if (operation === 'add') {
-      if(!orders.find(order => order.id === orderData.id)) {
-        updatedOrders = [...orders, orderData];
+    let updatedObjects;
+    if (operation === "add") {
+      if (!objects.find((object) => object.id === objectData.id)) {
+        updatedObjects = [...objects, objectData];
       } else {
-        updatedOrders = orders.map(order => order.id === orderData.id ? orderData : order);
+        updatedObjects = objects.map((object) =>
+          object.id === objectData.id ? objectData : object
+        );
       }
-    } else if (operation === 'delete') {
-      const orderToUpdate = orders.find(order => order.id === orderData)
-      if (!orderToUpdate) {
-        throw new Error('Error deleting the order');
+    } else if (operation === "delete") {
+      const objectToUpdate = objects.find((object) => object.id === objectData);
+      if (!objectToUpdate) {
+        throw new Error(`Error deleting the ${objectType}`);
       }
-      updatedOrders = orders.filter((order) => order.id !== orderData);
+      updatedObjects = objects.filter((object) => object.id !== objectData);
     } else {
-      throw new Error('Invalid operation');
+      throw new Error("Invalid operation");
     }
 
-    const updatedOrdersData = JSON.stringify(updatedOrders, null, 2);
-    fs.writeFileSync(dataPath, updatedOrdersData);
+    const updatedObjectsData = JSON.stringify(updatedObjects, null, 2);
+    fs.writeFileSync(dataPath, updatedObjectsData);
 
     reloadOpenWindows();
 
@@ -108,21 +110,26 @@ const handleOrderOperation = async (operation, event, orderData) => {
   }
 };
 
-ipcMain.handle('add-order', (event, newOrder) =>
-  handleOrderOperation('add', event, newOrder)
+ipcMain.handle("add-order", (event, newOrder) =>
+  handleOperation("add", event, newOrder, "order")
 );
-ipcMain.handle('delete-order', (event, orderIdToDelete) =>
-  handleOrderOperation('delete', event, orderIdToDelete)
+
+ipcMain.handle("delete-order", (event, orderIdToDelete) =>
+  handleOperation("delete", event, orderIdToDelete, "order")
+);
+
+ipcMain.handle("add-sculpture", (event, newSculpture) =>
+  handleOperation("add", event, newSculpture, "sculpture")
 );
 
 function reloadOpenWindows() {
   for (let window of BrowserWindow.getAllWindows()) {
-    window.webContents.send('reload-content');
+    window.webContents.send("reload-content");
   }
 }
 
 // On macOS, the app should close only on Cmd+Q.
-app.on('window-all-closed', () => {
+app.on("window-all-closed", () => {
   if (!isMac) {
     app.quit();
   }

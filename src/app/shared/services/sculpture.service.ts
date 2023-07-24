@@ -26,4 +26,9 @@ export class SculptureService implements OnDestroy {
       this.sculptures$.next(data as Sculpture[]);
     });
   }
+
+  addSculpture(sculpture: Sculpture) {
+    this.dataService.sendSignal('add-sculpture', sculpture);
+    this.fetchSculptures();
+  }
 }

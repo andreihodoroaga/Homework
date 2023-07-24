@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { SculptureService } from '../../services/sculpture.service';
 import { Sculpture } from '../../models/sculpture';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sculptures',
@@ -12,10 +13,14 @@ import { Observable } from 'rxjs';
 export class SculpturesComponent implements OnInit {
   sculptures$?: Observable<Sculpture[]>;
 
-  constructor(private sculptureService: SculptureService) {
+  constructor(private sculptureService: SculptureService, private router: Router) {
   }
 
   ngOnInit(): void {
     this.sculptures$ = this.sculptureService.sculptureList$;
+  }
+
+  handleNavigation() {
+    this.router.navigate(["sculptures/add"])
   }
 }

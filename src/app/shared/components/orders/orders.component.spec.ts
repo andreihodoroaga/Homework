@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { RouterTestingModule } from '@angular/router/testing';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { MatDialogModule } from '@angular/material/dialog';
 
 const mockedOrders: Order[] = [
   {
@@ -55,7 +56,7 @@ describe('OrdersComponent', () => {
   beforeEach(() => {
     mockOrderService = jasmine.createSpyObj('OrderService', ['deleteOrder'], {'orders$': of(mockedOrders)});
     TestBed.configureTestingModule({
-      imports: [MatCardModule, MatIconModule, RouterTestingModule.withRoutes([])],
+      imports: [MatCardModule, MatIconModule, MatDialogModule, RouterTestingModule.withRoutes([])],
       declarations: [OrdersComponent],
       providers: [
         { provide: OrderService, useValue: mockOrderService },
@@ -89,7 +90,7 @@ describe('OrdersComponent', () => {
   });
 
   it('should set the deleteOrderError when an error occurs', async () => {
-    mockOrderService.deleteOrder.and.returnValue(Promise.reject('Error deleting the order!'));
+    mockOrderService.deleteOrder.and.returnValue(Promise.reject('Error deleting the order!');
     await component.deleteOrder(mockedOrders[0]);  // the parameter chosen here does not have any effect
 
     expect(component.deleteOrderError).toContain('Error');
