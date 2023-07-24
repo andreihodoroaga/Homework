@@ -1,7 +1,3 @@
-<mat-card *ngIf="order">
+<app-edit-container (handleNavigationEvent)="handleNavigation($event)">
   <app-add-order [existingOrder]="order"></app-add-order>
-  <mat-card-footer>
-    <button mat-stroked-button color="primary" class="prev-order-btn" (click)="handleNavigation(-1)">Previous</button>
-    <button mat-stroked-button color="primary" class="next-order-btn" (click)="handleNavigation(+1)">Next</button>
-  </mat-card-footer>
-</mat-card>
+</app-edit-container>

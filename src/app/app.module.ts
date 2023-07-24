@@ -25,6 +25,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from './shared/components/confirm-dialog/confirm-dialog.component';
 import { BaseFormComponent } from './shared/components/base-form/base-form.component';
+import { EditContainerComponent } from './shared/components/edit-container/edit-container.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { BaseFormComponent } from './shared/components/base-form/base-form.compo
     ConfiguredSculptureFormComponent,
     ConfirmDialogComponent,
     BaseFormComponent,
+    EditContainerComponent,
   ],
   imports: [
     BrowserModule,
