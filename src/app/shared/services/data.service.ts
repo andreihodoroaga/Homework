@@ -15,7 +15,9 @@ export class DataService {
       try {
         this.ipcRenderer = window.require('electron').ipcRenderer;
         this.ipcRenderer.on('reload-content', () => {
-          this.refreshContent$.next("refresh");
+          this.ngZone.run(() => {
+            this.refreshContent$.next("refresh");
+          });
         })
       } catch (e) {
         throw e;

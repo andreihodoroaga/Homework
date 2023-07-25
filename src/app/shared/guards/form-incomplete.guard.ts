@@ -17,7 +17,6 @@ export class FormIncompleteGuard {
     if (component.isFormIncomplete()) {
       const dialogConfig = new MatDialogConfig();
       dialogConfig.autoFocus = true;
-      dialogConfig.disableClose = true;
       dialogConfig.data = {
         title: 'Confirm action',
         message: 'You have unsaved changes. Are you sure you want to leave?'

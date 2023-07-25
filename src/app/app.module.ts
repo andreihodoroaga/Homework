@@ -9,7 +9,6 @@ import { AddOrderComponent } from './shared/components/orders/add-order/add-orde
 import { EditOrderComponent } from './shared/components/orders/edit-order/edit-order.component';
 import { AddSculptureComponent } from './shared/components/sculptures/add-sculpture/add-sculpture.component';
 import { EditSculptureComponent } from './shared/components/sculptures/edit-sculpture/edit-sculpture.component';
-import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -35,7 +34,6 @@ import { EditContainerComponent } from './shared/components/edit-container/edit-
     EditOrderComponent,
     AddSculptureComponent,
     EditSculptureComponent,
-    PageNotFoundComponent,
     NavbarComponent,
     ConfiguredSculptureFormComponent,
     ConfirmDialogComponent,

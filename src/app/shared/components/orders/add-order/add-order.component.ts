@@ -43,14 +43,23 @@ export class AddOrderComponent
   private formSubmitted = false;
 
   orderForm = new FormGroup({
-    id: new FormControl(uuid.v4(), Validators.required),
-    buyerName: new FormControl('', Validators.required),
-    buyerDeliveryAddress: new FormControl('', Validators.required),
-    configuredSculpture: new FormControl(null),
-    configuredSculptures: new FormControl<ConfiguredSculpture[]>(
-      [],
-      [emptyArrayValidator, totalWeightValidator]
-    ),
+    id: new FormControl(uuid.v4(), {
+      validators: Validators.required,
+      nonNullable: true,
+    }),
+    buyerName: new FormControl('', {
+      validators: Validators.required,
+      nonNullable: true,
+    }),
+    buyerDeliveryAddress: new FormControl('', {
+      validators: Validators.required,
+      nonNullable: true,
+    }),
+    configuredSculpture: new FormControl<ConfiguredSculpture | null>(null),
+    configuredSculptures: new FormControl<ConfiguredSculpture[]>([], {
+      validators: [emptyArrayValidator, totalWeightValidator],
+      nonNullable: true,
+    }),
   });
 
   constructor(
