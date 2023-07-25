@@ -13,9 +13,13 @@ import {
   FormControl,
   NG_VALUE_ACCESSOR,
 } from '@angular/forms';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, merge, takeUntil } from 'rxjs';
 import { ConfiguredSculpture } from 'src/app/shared/models/configured-sculpture';
-import { Material, materialPriceMultipliers, materialWeightMultipliers } from 'src/app/shared/models/material';
+import {
+  Material,
+  materialPriceMultipliers,
+  materialWeightMultipliers,
+} from 'src/app/shared/models/material';
 import { Sculpture } from 'src/app/shared/models/sculpture';
 import { SculptureService } from 'src/app/shared/services/sculpture.service';
 
@@ -54,10 +58,7 @@ export class ConfiguredSculptureFormComponent
     new EventEmitter<ConfiguredSculpture>();
 
   constructor(private sculptureService: SculptureService) {
-    this.sculptureControl.valueChanges
-      .pipe(takeUntil(this.destroyed$))
-      .subscribe(() => this.updateValue());
-    this.materialControl.valueChanges
+    merge(this.sculptureControl.valueChanges, this.materialControl.valueChanges)
       .pipe(takeUntil(this.destroyed$))
       .subscribe(() => this.updateValue());
   }
@@ -73,14 +74,22 @@ export class ConfiguredSculptureFormComponent
 
   public get totalSculpturesWeight() {
     return this.configuredSculptures
-      .map((configuredSculpture) => configuredSculpture.sculpture.baseWeight * materialWeightMultipliers[configuredSculpture.material])
+      .map(
+        (configuredSculpture) =>
+          configuredSculpture.sculpture.baseWeight *
+          materialWeightMultipliers[configuredSculpture.material]
+      )
       .reduce((partialSum, a) => partialSum + a, 0);
   }
 
   public get totalSculpturesPrice() {
     return this.configuredSculptures
-    .map((configuredSculpture) => configuredSculpture.sculpture.basePrice * materialPriceMultipliers[configuredSculpture.material])
-    .reduce((partialSum, a) => partialSum + a, 0);
+      .map(
+        (configuredSculpture) =>
+          configuredSculpture.sculpture.basePrice *
+          materialPriceMultipliers[configuredSculpture.material]
+      )
+      .reduce((partialSum, a) => partialSum + a, 0);
   }
 
   writeValue(value: ConfiguredSculpture): void {
@@ -114,7 +123,7 @@ export class ConfiguredSculptureFormComponent
     this.onTouched();
   }
 
-  onSubmit(sculpture: Sculpture, material: Material) {
+  addConfiguredSculpture(sculpture: Sculpture, material: Material) {
     this.newConfiguredSculptureEvent.emit({
       sculpture,
       material,

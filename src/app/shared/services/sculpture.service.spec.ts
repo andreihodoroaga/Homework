@@ -3,6 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { SculptureService } from './sculpture.service';
 import { DataService } from './data.service';
 import { Sculpture } from '../models/sculpture';
+import { of } from 'rxjs';
 
 const testData: Sculpture[] = [
   { id: '1', name: 'Sculpture 1', basePrice: 100, baseWeight: 200 },
@@ -15,6 +16,7 @@ const mockDataService = {
       subscribe: (callback: (data: any) => void) => callback(testData),
     }),
   }),
+  refresh$: of(''),
 };
 
 describe('SculptureService', () => {

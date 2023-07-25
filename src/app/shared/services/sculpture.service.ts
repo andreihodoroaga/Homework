@@ -12,7 +12,9 @@ export class SculptureService implements OnDestroy {
   private destroyed$ = new Subject<void>();
 
   constructor(private readonly dataService: DataService) {
-    this.fetchSculptures();
+    this.dataService.refresh$.pipe(takeUntil(this.destroyed$)).subscribe(() => {
+      this.fetchSculptures();
+    });
   }
 
   ngOnDestroy(): void {
@@ -26,9 +28,12 @@ export class SculptureService implements OnDestroy {
     });
   }
 
-  addSculpture(sculpture: Sculpture) {
-    this.dataService.sendSignal('add-sculpture', sculpture);
-    this.fetchSculptures();
+  async addSculpture(sculpture: Sculpture) {
+    const result = await this.dataService.sendSignal('add-sculpture', sculpture);
+    if (result.success) {
+      return '';
+    }
+    return `Error adding the sculpture!`;
   }
 
 

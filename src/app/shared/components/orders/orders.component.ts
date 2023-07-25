@@ -39,7 +39,7 @@ export class OrdersComponent {
     if (this.deleteOrderMessage)
       return; // avoid spam of the delete button
 
-    const message = await this.orderService.deleteOrder(order);
+    const message = await this.orderService.processOrder(order, 'delete');
     this.deleteOrderMessage = message;
     this.cdRef.detectChanges();
     setTimeout(() => {

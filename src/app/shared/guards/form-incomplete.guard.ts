@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanDeactivate } from '@angular/router';
-import { Observable } from 'rxjs';
+import { CanDeactivateFn } from '@angular/router';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../components/confirm-dialog/confirm-dialog.component';
 
@@ -11,10 +10,10 @@ export interface CanComponentDeactivate {
 @Injectable({
   providedIn: 'root',
 })
-export class FormIncompleteGuard implements CanDeactivate<CanComponentDeactivate> {
-  constructor(private dialog: MatDialog) {}
+export class FormIncompleteGuard {
+  constructor(private dialog: MatDialog) { }
 
-  canDeactivate(component: CanComponentDeactivate): Observable<boolean> | boolean {
+  canDeactivate: CanDeactivateFn<CanComponentDeactivate> = (component: CanComponentDeactivate) => {
     if (component.isFormIncomplete()) {
       const dialogConfig = new MatDialogConfig();
       dialogConfig.autoFocus = true;
@@ -30,5 +29,5 @@ export class FormIncompleteGuard implements CanDeactivate<CanComponentDeactivate
     }
 
     return true;
-  }
+  };
 }

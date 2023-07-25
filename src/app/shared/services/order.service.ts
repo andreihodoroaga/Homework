@@ -31,25 +31,15 @@ export class OrderService implements OnDestroy {
       });
   }
 
-  async addOrder(order: Order) {
-    return new Promise(async (resolve, reject) => {
-      try {
-        await this.dataService.sendSignal('add-order', order);
-        this.fetchOrders();
-        resolve('Success');
-      } catch (error) {
-        reject('Error adding the order');
-      }
-    });
-  }
-
-  async deleteOrder(order: Order) {
-    const result = await this.dataService.sendSignal('delete-order', order.id);
+  async processOrder(order: Order, operationType: 'delete' | 'add') {
+    const result = await this.dataService.sendSignal(
+      `${operationType}-order`,
+      operationType == 'delete' ? order.id : order
+    );
     if (result.success) {
-      this.fetchOrders();
       return '';
     }
-    return 'Error deleting the order!';
+    return result.error;
   }
 
   getNextOrderId(order: Order, direction: number) {

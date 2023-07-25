@@ -1,4 +1,4 @@
-<form (ngSubmit)="onSubmit(sculptureControl.value, materialControl.value)">
+<div class="configured-sculpture-inputs-container">
   <div class="sculpture-dropdown">
     <mat-form-field appearance="fill">
       <mat-label>Sculpture</mat-label>
@@ -21,7 +21,7 @@
     </mat-form-field>
   </div>
 
-  <button mat-stroked-button color="primary" type="submit"
+  <button mat-stroked-button color="primary" type="button" (click)="addConfiguredSculpture(sculptureControl.value, materialControl.value)"
     [disabled]="!(sculptureControl.value && materialControl.value)">Add Sculpture</button>
 
   <div class="configured-sculptures-container">
@@ -38,4 +38,4 @@
       <p>{{ totalSculpturesPrice | currency:'EUR' }}</p>
     </div>
   </div>
-</form>
+</div>

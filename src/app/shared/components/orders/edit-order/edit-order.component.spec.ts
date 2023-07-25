@@ -10,6 +10,16 @@ import { Order } from 'src/app/shared/models/order';
 import { Material } from 'src/app/shared/models/material';
 import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';
+import { EditContainerComponent } from '../../edit-container/edit-container.component';
+import { AddOrderComponent } from '../add-order/add-order.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { ConfiguredSculptureFormComponent } from '../add-order/configured-sculpture-form/configured-sculpture-form.component';
+import { MatSelectModule } from '@angular/material/select';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatIconModule } from '@angular/material/icon';
 
 const mockedOrders: Order[] = [
   {
@@ -62,8 +72,26 @@ describe('EditOrderComponent', () => {
     });
 
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([{path: 'orders/:id', component: EditOrderComponent}]), MatCardModule, MatListModule],
-      declarations: [EditOrderComponent],
+      imports: [
+        RouterTestingModule.withRoutes([
+          { path: 'orders/:id', component: EditOrderComponent },
+        ]),
+        MatCardModule,
+        MatListModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        BrowserAnimationsModule,
+        MatChipsModule,
+        MatIconModule,
+      ],
+      declarations: [
+        EditOrderComponent,
+        EditContainerComponent,
+        AddOrderComponent,
+        ConfiguredSculptureFormComponent,
+      ],
       providers: [
         { provide: OrderService, useValue: mockOrderService },
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
@@ -79,19 +107,30 @@ describe('EditOrderComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should set the order properly', () => {
-    spyOn(component, 'getOrder');
-
-    component.ngOnInit();
-
-    expect(component.getOrder).toHaveBeenCalled();
-    expect(component.order).toEqual(mockedOrders[0]);
+  it('should set the order properly', (done) => {
+    component.order$.subscribe(order => {
+      expect(order).toEqual(mockedOrders[0]);
+      done();
+    });
   });
 
   it('should navigate to the previous order', fakeAsync(() => {
     spyOn(router, 'navigate').and.callThrough();
     spyOn(router, 'navigateByUrl').and.callThrough();
     const prevOrderBtn = fixture.debugElement.query(By.css('.prev-order-btn')).nativeElement;
+    mockOrderService.getNextOrderId.and.returnValue(of(mockedOrders[1].id));
+
+    prevOrderBtn.click();
+
+    expect(router.navigateByUrl).toHaveBeenCalledWith('/', { skipLocationChange: true });
+    tick(1000);
+    expect(router.navigate).toHaveBeenCalledWith(['orders', mockedOrders[1].id]);
+  }))
+
+  it('should navigate to the next order', fakeAsync(() => {
+    spyOn(router, 'navigate').and.callThrough();
+    spyOn(router, 'navigateByUrl').and.callThrough();
+    const prevOrderBtn = fixture.debugElement.query(By.css('.next-order-btn')).nativeElement;
     mockOrderService.getNextOrderId.and.returnValue(of(mockedOrders[1].id));
 
     prevOrderBtn.click();

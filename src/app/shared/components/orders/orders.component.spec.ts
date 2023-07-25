@@ -10,7 +10,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { RouterTestingModule } from '@angular/router/testing';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 const mockedOrders: Order[] = [
   {
@@ -51,15 +52,25 @@ describe('OrdersComponent', () => {
   let component: OrdersComponent;
   let fixture: ComponentFixture<OrdersComponent>;
   let mockOrderService: jasmine.SpyObj<OrderService>;
+  let mockDialog: jasmine.SpyObj<MatDialog>;
+  let dialogRefSpyObj = jasmine.createSpyObj({ afterClosed : of(true), close: null });
   let router: Router;
 
   beforeEach(() => {
-    mockOrderService = jasmine.createSpyObj('OrderService', ['deleteOrder'], {'orders$': of(mockedOrders)});
+    mockOrderService = jasmine.createSpyObj('OrderService', ['processOrder'], {'orders$': of(mockedOrders)});
+    mockDialog = jasmine.createSpyObj('MatDialog', ['open']);
     TestBed.configureTestingModule({
-      imports: [MatCardModule, MatIconModule, MatDialogModule, RouterTestingModule.withRoutes([])],
+      imports: [
+        MatCardModule,
+        MatIconModule,
+        MatFormFieldModule,
+        MatDialogModule,
+        RouterTestingModule.withRoutes([])
+      ],
       declarations: [OrdersComponent],
       providers: [
         { provide: OrderService, useValue: mockOrderService },
+        { provide: MatDialog, useValue: mockDialog }
       ],
     });
     fixture = TestBed.createComponent(OrdersComponent);
@@ -80,21 +91,23 @@ describe('OrdersComponent', () => {
   });
 
   it('should call the delete order methods when the delete button is clicked', () => {
+    spyOn(component, 'handleDeleteOrder').and.callThrough();
+    mockDialog.open.and.returnValue(dialogRefSpyObj);
     spyOn(component, 'deleteOrder').and.callThrough();
     const deleteOrderBtn = fixture.debugElement.query(By.css('.delete-order-btn')).nativeElement;
 
     deleteOrderBtn.click();
 
+    expect(component.handleDeleteOrder).toHaveBeenCalled();
     expect(component.deleteOrder).toHaveBeenCalled();
-    expect(mockOrderService.deleteOrder).toHaveBeenCalled();
+    expect(mockOrderService.processOrder).toHaveBeenCalled();
   });
 
-  it('should set the deleteOrderError when an error occurs', async () => {
-    mockOrderService.deleteOrder.and.returnValue(Promise.reject('Error deleting the order!');
+  it('should set the deleteOrderMessage when an error occurs', async () => {
+    mockOrderService.processOrder.and.returnValue(Promise.resolve('Error deleting the order'));
     await component.deleteOrder(mockedOrders[0]);  // the parameter chosen here does not have any effect
-
-    expect(component.deleteOrderError).toContain('Error');
-  })
+    expect(component.deleteOrderMessage).toContain('Error');
+  });
 
   it('should navigate to orders/add when the add order button is clicked', () => {
     const navigateSpy = spyOn(router, 'navigate');
@@ -103,5 +116,5 @@ describe('OrdersComponent', () => {
     addOrderBtn.click();
 
     expect(navigateSpy).toHaveBeenCalledWith(['orders/add']);
-  })
+  });
 });

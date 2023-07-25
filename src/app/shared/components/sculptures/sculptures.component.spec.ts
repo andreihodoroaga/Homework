@@ -5,6 +5,7 @@ import { SculptureService } from '../../services/sculpture.service';
 import { Sculpture } from '../../models/sculpture';
 import { of } from 'rxjs';
 import { MatCardModule } from '@angular/material/card';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 
 const mockedSculptures: Sculpture[] = [
   {
@@ -28,7 +29,7 @@ describe('SculpturesComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [MatCardModule],
+      imports: [MatCardModule, RouterModule],
       declarations: [SculpturesComponent],
       providers: [
         {
@@ -37,6 +38,12 @@ describe('SculpturesComponent', () => {
             sculptureList$: of(mockedSculptures),
           },
         },
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            params: of()
+          }
+        }
       ],
     });
     fixture = TestBed.createComponent(SculpturesComponent);

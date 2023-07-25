@@ -3,7 +3,6 @@ import {
   ChangeDetectionStrategy,
   OnDestroy,
   Input,
-  SimpleChanges,
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -19,8 +18,23 @@ import { Sculpture } from 'src/app/shared/models/sculpture';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddSculptureComponent implements OnDestroy, CanComponentDeactivate {
+  private _existingSculpture?: Sculpture;
+
+  public get existingSculpture() {
+    return this._existingSculpture;
+  }
+
   @Input()
-  existingSculpture!: Sculpture;
+  public set existingSculpture(value: Sculpture | undefined) {
+    this._existingSculpture = value;
+    if (value) {
+      this.sculptureForm.patchValue({
+        ...value,
+        basePrice: value.basePrice.toString(),
+        baseWeight: value.baseWeight.toString(),
+      })
+    }
+  }
 
   errorMessage: string = '';
   private destroyed$ = new Subject<void>();
@@ -38,25 +52,12 @@ export class AddSculptureComponent implements OnDestroy, CanComponentDeactivate 
     private readonly sculptureService: SculptureService
   ) {}
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['existingSculpture'] && changes['existingSculpture'].currentValue) {
-      this.sculptureForm.patchValue({ id: this.existingSculpture.id });
-      this.sculptureForm.patchValue({ name: this.existingSculpture.name });
-      this.sculptureForm.patchValue({
-        basePrice: this.existingSculpture.basePrice.toString(),
-      });
-      this.sculptureForm.patchValue({
-        baseWeight: this.existingSculpture.baseWeight.toString(),
-      });
-    }
-  }
-
   ngOnDestroy(): void {
     this.destroyed$.next();
     this.destroyed$.complete();
   }
 
-  isFormIncomplete(): boolean {
+  isFormIncomplete() {
     return this.sculptureForm.dirty && !this.formSubmitted;
   }
 

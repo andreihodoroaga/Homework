@@ -1,3 +1,3 @@
-<app-edit-container (handleNavigationEvent)="handleNavigation($event)">
+<app-edit-container *ngIf="sculpture$ | async as sculpture" (handleNavigationEvent)="handleNavigation(sculpture, $event)">
   <app-add-sculpture [existingSculpture]="sculpture"></app-add-sculpture>
 </app-edit-container>

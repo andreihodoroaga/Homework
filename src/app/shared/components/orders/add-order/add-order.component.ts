@@ -4,12 +4,11 @@ import {
   OnInit,
   OnDestroy,
   Input,
-  SimpleChanges,
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfiguredSculpture } from 'src/app/shared/models/configured-sculpture';
 import { Order } from 'src/app/shared/models/order';
-import { emptyArrayValidator } from 'src/app/shared/directives/emptyArrayValidator';
+import { emptyArrayValidator } from 'src/app/shared/directives/emptyArrayValidator.directive';
 import { Router } from '@angular/router';
 import { OrderService } from 'src/app/shared/services/order.service';
 import { totalWeightValidator } from 'src/app/shared/directives/totalWeightValidator.directive';
@@ -23,11 +22,21 @@ import { CanComponentDeactivate } from 'src/app/shared/guards/form-incomplete.gu
   styleUrls: ['./add-order.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AddOrderComponent implements OnInit, OnDestroy, CanComponentDeactivate {
-  @Input()
-  existingOrder!: Order;
+export class AddOrderComponent
+  implements OnInit, OnDestroy, CanComponentDeactivate
+{
+  private _existingOrder?: Order;
 
-  private _configuredSculptures: ConfiguredSculpture[] = [];
+  public get existingOrder() {
+    return this._existingOrder;
+  }
+
+  @Input()
+  public set existingOrder(value: Order | undefined) {
+    this._existingOrder = value;
+    this.orderForm.patchValue({ ...value });
+  }
+
   exceededWeightError: string | null = null;
   errorMessage: string = '';
   private destroyed$ = new Subject<void>();
@@ -38,10 +47,10 @@ export class AddOrderComponent implements OnInit, OnDestroy, CanComponentDeactiv
     buyerName: new FormControl('', Validators.required),
     buyerDeliveryAddress: new FormControl('', Validators.required),
     configuredSculpture: new FormControl(null),
-    configuredSculptures: new FormControl(this._configuredSculptures, [
-      emptyArrayValidator,
-      totalWeightValidator,
-    ]),
+    configuredSculptures: new FormControl<ConfiguredSculpture[]>(
+      [],
+      [emptyArrayValidator, totalWeightValidator]
+    ),
   });
 
   constructor(
@@ -66,27 +75,13 @@ export class AddOrderComponent implements OnInit, OnDestroy, CanComponentDeactiv
       });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['existingOrder'] && changes['existingOrder'].currentValue) {
-      this._configuredSculptures = this.existingOrder.configuredSculptures;
-      this.orderForm.patchValue({ id: this.existingOrder.id });
-      this.orderForm.patchValue({ buyerName: this.existingOrder.buyerName });
-      this.orderForm.patchValue({
-        buyerDeliveryAddress: this.existingOrder.buyerDeliveryAddress,
-      });
-      this.orderForm.patchValue({
-        configuredSculptures: this.existingOrder.configuredSculptures,
-      });
-    }
-  }
-
   ngOnDestroy(): void {
     this.destroyed$.next();
     this.destroyed$.complete();
   }
 
-  public get configuredSculptures(): ConfiguredSculpture[] {
-    return this._configuredSculptures;
+  public get configuredSculptures() {
+    return this.orderForm.controls['configuredSculptures'].value;
   }
 
   public get formBtnText() {
@@ -98,19 +93,19 @@ export class AddOrderComponent implements OnInit, OnDestroy, CanComponentDeactiv
   }
 
   addConfiguredSculpture(configuredSculpture: ConfiguredSculpture) {
-    this._configuredSculptures.push(configuredSculpture);
-    this.orderForm
-      .get('configuredSculptures')
-      ?.setValue(this._configuredSculptures);
+    this.orderForm.controls['configuredSculptures'].setValue([
+      ...(this.configuredSculptures || []),
+      configuredSculpture,
+    ]);
   }
 
   removeConfiguredSculpture(configuredSculpture: ConfiguredSculpture) {
-    this._configuredSculptures = this._configuredSculptures.filter(
-      (sculpture) => sculpture !== configuredSculpture
+    const updatedConfiguredSculptures = (
+      this.configuredSculptures || []
+    ).filter((sculpture) => sculpture !== configuredSculpture);
+    this.orderForm.controls['configuredSculptures'].setValue(
+      updatedConfiguredSculptures
     );
-    this.orderForm
-      .get('configuredSculptures')
-      ?.setValue(this._configuredSculptures);
   }
 
   async onSubmit() {
@@ -125,7 +120,7 @@ export class AddOrderComponent implements OnInit, OnDestroy, CanComponentDeactiv
       };
 
       try {
-        await this.orderService.addOrder(order);
+        await this.orderService.processOrder(order, 'add');
         this.formSubmitted = true;
         this.router.navigate(['orders']);
       } catch (errorMessage) {

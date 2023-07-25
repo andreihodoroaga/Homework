@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { EditContainerComponent } from './edit-container.component';
+import { MatCardModule } from '@angular/material/card';
 
 describe('EditContainerComponent', () => {
   let component: EditContainerComponent;
@@ -8,7 +9,8 @@ describe('EditContainerComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [EditContainerComponent]
+      declarations: [EditContainerComponent],
+      imports: [MatCardModule],
     });
     fixture = TestBed.createComponent(EditContainerComponent);
     component = fixture.componentInstance;

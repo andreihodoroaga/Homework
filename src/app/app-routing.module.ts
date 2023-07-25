@@ -17,14 +17,18 @@ const routes: Routes = [
   {
     path: 'orders/add',
     component: AddOrderComponent,
-    canDeactivate: [FormIncompleteGuard]
+    canDeactivate: [FormIncompleteGuard],
   },
   { path: 'orders/:id', component: EditOrderComponent },
   {
     path: 'sculptures',
     component: SculpturesComponent,
   },
-  { path: 'sculptures/add', component: AddSculptureComponent },
+  {
+    path: 'sculptures/add',
+    component: AddSculptureComponent,
+    canDeactivate: [FormIncompleteGuard],
+  },
   { path: 'sculptures/:id', component: EditSculptureComponent },
   { path: '', redirectTo: '/orders', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent },

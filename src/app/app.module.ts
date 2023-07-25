@@ -24,7 +24,6 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatListModule } from '@angular/material/list';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from './shared/components/confirm-dialog/confirm-dialog.component';
-import { BaseFormComponent } from './shared/components/base-form/base-form.component';
 import { EditContainerComponent } from './shared/components/edit-container/edit-container.component';
 
 @NgModule({
@@ -40,7 +39,6 @@ import { EditContainerComponent } from './shared/components/edit-container/edit-
     NavbarComponent,
     ConfiguredSculptureFormComponent,
     ConfirmDialogComponent,
-    BaseFormComponent,
     EditContainerComponent,
   ],
   imports: [

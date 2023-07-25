@@ -1,17 +1,24 @@
 import { TestBed } from '@angular/core/testing';
-import { CanActivateFn } from '@angular/router';
-
-import { formIncompleteGuard } from './form-incomplete.guard';
+import { FormIncompleteGuard } from './form-incomplete.guard';
+import { MatDialog } from '@angular/material/dialog';
 
 describe('formIncompleteGuard', () => {
-  const executeGuard: CanActivateFn = (...guardParameters) => 
-      TestBed.runInInjectionContext(() => formIncompleteGuard(...guardParameters));
+  let formIncompleteGuard: FormIncompleteGuard;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [
+        FormIncompleteGuard,
+        {
+          provide: MatDialog,
+          useValue: {},
+        },
+      ],
+    });
+    formIncompleteGuard = TestBed.inject(FormIncompleteGuard);
   });
 
   it('should be created', () => {
-    expect(executeGuard).toBeTruthy();
+    expect(formIncompleteGuard).toBeTruthy();
   });
 });

@@ -9,17 +9,7 @@ export const totalWeightValidator: ValidatorFn = (
 
   let totalWeight = 0;
   for (let sculpture of array) {
-    let mat = Material.Wood;
-    switch(sculpture.material.toString()) {
-      case 'Bronze':
-        mat = Material.Bronze;
-        break;
-      case 'Platinum':
-        mat = Material.Platinum;
-        break;
-    }
-
-    const weightMultiplier = materialWeightMultipliers[mat];
+    const weightMultiplier = materialWeightMultipliers[sculpture.material];
     totalWeight += sculpture.sculpture.baseWeight * weightMultiplier;
   }
 

@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subject, map, takeUntil, tap } from 'rxjs';
+import { map } from 'rxjs';
 import { Order } from 'src/app/shared/models/order';
 import { OrderService } from 'src/app/shared/services/order.service';
 
@@ -10,9 +10,12 @@ import { OrderService } from 'src/app/shared/services/order.service';
   styleUrls: ['./edit-order.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EditOrderComponent implements OnInit, OnDestroy {
-  order!: Order;
-  private destroyed$ = new Subject<void>();
+export class EditOrderComponent {
+  order$ = this.orderService.orders$.pipe(
+    map((orders) =>
+      orders.find((ord) => ord.id === this.activatedRoute.snapshot.params['id'])
+    )
+  );
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -20,32 +23,8 @@ export class EditOrderComponent implements OnInit, OnDestroy {
     private readonly router: Router
   ) {}
 
-  ngOnInit() {
-    this.getOrder();
-  }
-
-  ngOnDestroy(): void {
-    this.destroyed$.next();
-    this.destroyed$.complete();
-  }
-
-  getOrder() {
-    this.orderService.orders$
-      .pipe(
-        takeUntil(this.destroyed$),
-        map((orders) =>
-          orders.find(
-            (ord) => ord.id === this.activatedRoute.snapshot.params['id']
-          )
-        )
-      )
-      .subscribe((order) => {
-        this.order = order!;
-      });
-  }
-
-  handleNavigation(direction: number) {
-    this.orderService.getNextOrderId(this.order, direction).subscribe((id) => {
+  handleNavigation(order: Order, direction: number) {
+    this.orderService.getNextOrderId(order, direction).subscribe((id) => {
       this.router
         .navigateByUrl('/', { skipLocationChange: true })
         .then(() => this.router.navigate(['orders', id]));

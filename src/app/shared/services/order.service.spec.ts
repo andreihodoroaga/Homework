@@ -72,33 +72,29 @@ describe('OrderService', () => {
   });
 
   it('should add a new order', async () => {
-    mockDataService.sendSignal.and.returnValue(Promise.resolve());
-    spyOn(orderService, 'fetchOrders').and.callThrough();
+    mockDataService.sendSignal.and.returnValue(Promise.resolve({success: true}));
 
-    const result = await orderService.addOrder(mockedOrders[0]);
+    const result = await orderService.processOrder(mockedOrders[0], 'add');
 
     expect(mockDataService.sendSignal).toHaveBeenCalled();
-    expect(orderService.fetchOrders).toHaveBeenCalled();
-    expect(result).toEqual('Success');
+    expect(result).toEqual('');
   });
 
   it('should return a rejected promise when an order cannot be added', async () => {
-    mockDataService.sendSignal.and.returnValue(Promise.reject());
+    mockDataService.sendSignal.and.returnValue(Promise.reject({ success: false, error: 'Error deleting the order' }));
 
-    await orderService.addOrder(mockedOrders[0]).catch((reason) => {
-      expect(reason).toEqual('Error adding the order');
+    await orderService.processOrder(mockedOrders[0], 'add').catch((result) => {
+      expect(result.error).toContain('Error');
     });
   });
 
   it('should delete an order', async () => {
-    mockDataService.sendSignal.and.returnValue(Promise.resolve());
-    spyOn(orderService, 'fetchOrders').and.callThrough();
+    mockDataService.sendSignal.and.returnValue(Promise.resolve({success: true}));
 
-    const result = await orderService.deleteOrder(mockedOrders[0]);
+    const result = await orderService.processOrder(mockedOrders[0], 'delete');
 
     expect(mockDataService.sendSignal).toHaveBeenCalledWith('delete-order', mockedOrders[0].id);
-    expect(orderService.fetchOrders).toHaveBeenCalled();
-    expect(result).toEqual('Success');
+    expect(result).toEqual('');
   });
 
   it('should get the next order\'s id', (done) => {
