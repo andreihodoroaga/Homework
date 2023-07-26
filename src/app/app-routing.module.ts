@@ -18,7 +18,11 @@ const routes: Routes = [
     component: AddOrderComponent,
     canDeactivate: [FormIncompleteGuard],
   },
-  { path: 'orders/:id', component: EditOrderComponent },
+  {
+    path: 'orders/:id',
+    component: EditOrderComponent,
+    canDeactivate: [FormIncompleteGuard],
+  },
   {
     path: 'sculptures',
     component: SculpturesComponent,
@@ -28,7 +32,11 @@ const routes: Routes = [
     component: AddSculptureComponent,
     canDeactivate: [FormIncompleteGuard],
   },
-  { path: 'sculptures/:id', component: EditSculptureComponent },
+  {
+    path: 'sculptures/:id',
+    component: EditSculptureComponent,
+    canDeactivate: [FormIncompleteGuard],
+  },
   { path: '', redirectTo: '/orders', pathMatch: 'full' },
 ];
 
