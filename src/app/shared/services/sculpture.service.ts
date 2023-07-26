@@ -29,11 +29,7 @@ export class SculptureService implements OnDestroy {
   }
 
   async addSculpture(sculpture: Sculpture) {
-    const result = await this.dataService.sendSignal('add-sculpture', sculpture);
-    if (result.success) {
-      return '';
-    }
-    return `Error adding the sculpture!`;
+    await this.dataService.sendSignal('add-sculpture', sculpture);
   }
 
 

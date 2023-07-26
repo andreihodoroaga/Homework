@@ -1,4 +1,4 @@
-<form [formGroup]="orderForm" (ngSubmit)="onSubmit()" class="add-order-form" *ngIf="!errorMessage">
+<form [formGroup]="orderForm" (ngSubmit)="onSubmit()" class="add-order-form">
   <mat-form-field appearance="fill">
     <mat-label>Order ID</mat-label>
     <input matInput formControlName="id" type="text" [readonly]="!!existingOrder" />
@@ -22,8 +22,3 @@
   <button mat-raised-button color="accent" type="submit" class="add-order-btn" [disabled]="!orderForm.valid">{{
     formBtnText }}</button>
 </form>
-
-<div class="add-order-error" *ngIf="!!errorMessage">
-  <mat-error>{{ errorMessage }}</mat-error>
-  <a routerLink="orders">Back to orders</a>
-</div>

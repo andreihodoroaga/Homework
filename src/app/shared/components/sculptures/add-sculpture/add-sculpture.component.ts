@@ -36,7 +36,6 @@ export class AddSculptureComponent implements OnDestroy, CanComponentDeactivate 
     }
   }
 
-  errorMessage: string = '';
   private destroyed$ = new Subject<void>();
   private formSubmitted = false;
 
@@ -61,7 +60,7 @@ export class AddSculptureComponent implements OnDestroy, CanComponentDeactivate 
     return this.sculptureForm.dirty && !this.formSubmitted;
   }
 
-  async onSubmit() {
+  onSubmit() {
     const { id, name, basePrice, baseWeight } = this.sculptureForm.value;
 
     if (id && name && basePrice && baseWeight) {
@@ -72,13 +71,9 @@ export class AddSculptureComponent implements OnDestroy, CanComponentDeactivate 
         baseWeight: parseFloat(baseWeight),
       };
 
-      try {
-        await this.sculptureService.addSculpture(sculpture);
-        this.formSubmitted = true;
-        this.router.navigate(['sculptures']);
-      } catch (errorMessage) {
-        this.errorMessage = errorMessage as string;
-      }
+      this.sculptureService.addSculpture(sculpture);
+      this.formSubmitted = true;
+      this.router.navigate(['sculptures']);
     }
   }
 }

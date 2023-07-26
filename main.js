@@ -75,39 +75,35 @@ ipcMain.handle("get-orders", (event, args) => {
 });
 
 const handleOperation = async (operation, event, objectData, objectType) => {
-  try {
-    const dataPath = path.join(__dirname, "data", `${objectType}s.json`);
-    const objectsData = fs.readFileSync(dataPath, "utf-8");
-    const objects = JSON.parse(objectsData);
+  const dataPath = path.join(__dirname, "data", `${objectType}s.json`);
+  const objectsData = fs.readFileSync(dataPath, "utf-8");
+  const objects = JSON.parse(objectsData);
 
-    let updatedObjects;
-    if (operation === "add") {
-      if (!objects.find((object) => object.id === objectData.id)) {
-        updatedObjects = [...objects, objectData];
-      } else {
-        updatedObjects = objects.map((object) =>
-          object.id === objectData.id ? objectData : object
-        );
-      }
-    } else if (operation === "delete") {
-      const objectToUpdate = objects.find((object) => object.id === objectData);
-      if (!objectToUpdate) {
-        throw new Error(`Error deleting the ${objectType}`);
-      }
-      updatedObjects = objects.filter((object) => object.id !== objectData);
+  let updatedObjects;
+  if (operation === "add") {
+    if (!objects.find((object) => object.id === objectData.id)) {
+      updatedObjects = [...objects, objectData];
     } else {
-      throw new Error("Invalid operation");
+      updatedObjects = objects.map((object) =>
+        object.id === objectData.id ? objectData : object
+      );
     }
-
-    const updatedObjectsData = JSON.stringify(updatedObjects, null, 2);
-    fs.writeFileSync(dataPath, updatedObjectsData);
-
-    reloadOpenWindows();
-
-    return { success: true };
-  } catch (error) {
-    return { success: false, error: error.message };
+  } else if (operation === "delete") {
+    const objectToUpdate = objects.find((object) => object.id === objectData);
+    if (!objectToUpdate) {
+      throw new Error(`Error deleting the ${objectType}`);
+    }
+    updatedObjects = objects.filter((object) => object.id !== objectData);
+  } else {
+    throw new Error("Invalid operation");
   }
+
+  const updatedObjectsData = JSON.stringify(updatedObjects, null, 2);
+  fs.writeFileSync(dataPath, updatedObjectsData);
+
+  reloadOpenWindows();
+
+  return { success: true };
 };
 
 ipcMain.handle("add-order", (event, newOrder) =>

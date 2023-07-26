@@ -32,14 +32,10 @@ export class OrderService implements OnDestroy {
   }
 
   async processOrder(order: Order, operationType: 'delete' | 'add') {
-    const result = await this.dataService.sendSignal(
+    await this.dataService.sendSignal(
       `${operationType}-order`,
       operationType == 'delete' ? order.id : order
     );
-    if (result.success) {
-      return '';
-    }
-    return result.error;
   }
 
   getNextOrderId(order: Order, direction: number) {

@@ -117,7 +117,7 @@ export class AddOrderComponent
     );
   }
 
-  async onSubmit() {
+  onSubmit() {
     const { id, buyerName, buyerDeliveryAddress } = this.orderForm.value;
 
     if (id && buyerName && buyerDeliveryAddress && this.configuredSculptures) {
@@ -128,13 +128,9 @@ export class AddOrderComponent
         configuredSculptures: this.configuredSculptures,
       };
 
-      try {
-        await this.orderService.processOrder(order, 'add');
-        this.formSubmitted = true;
-        this.router.navigate(['orders']);
-      } catch (errorMessage) {
-        this.errorMessage = errorMessage as string;
-      }
+      this.orderService.processOrder(order, 'add');
+      this.formSubmitted = true;
+      this.router.navigate(['orders']);
     }
   }
 }

@@ -91,22 +91,14 @@ describe('OrdersComponent', () => {
   });
 
   it('should call the delete order methods when the delete button is clicked', () => {
-    spyOn(component, 'handleDeleteOrder').and.callThrough();
     mockDialog.open.and.returnValue(dialogRefSpyObj);
     spyOn(component, 'deleteOrder').and.callThrough();
     const deleteOrderBtn = fixture.debugElement.query(By.css('.delete-order-btn')).nativeElement;
 
     deleteOrderBtn.click();
 
-    expect(component.handleDeleteOrder).toHaveBeenCalled();
     expect(component.deleteOrder).toHaveBeenCalled();
     expect(mockOrderService.processOrder).toHaveBeenCalled();
-  });
-
-  it('should set the deleteOrderMessage when an error occurs', async () => {
-    mockOrderService.processOrder.and.returnValue(Promise.resolve('Error deleting the order'));
-    await component.deleteOrder(mockedOrders[0]);  // the parameter chosen here does not have any effect
-    expect(component.deleteOrderMessage).toContain('Error');
   });
 
   it('should navigate to orders/add when the add order button is clicked', () => {

@@ -1,7 +1,6 @@
 import {
   Component,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
 } from '@angular/core';
 import { OrderService } from '../../services/order.service';
 import { Order } from '../../models/order';
@@ -17,16 +16,14 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.compone
 })
 export class OrdersComponent {
   orders$ = this.orderService.orders$;
-  deleteOrderMessage = '';
 
   constructor(
     private orderService: OrderService,
     private router: Router,
-    private cdRef: ChangeDetectorRef,
     private dialog: MatDialog
   ) {}
 
-  async handleDeleteOrder(order: Order) {
+  deleteOrder(order: Order) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
     dialogConfig.data = {
@@ -38,21 +35,9 @@ export class OrdersComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.deleteOrder(order);
+        this.orderService.processOrder(order, 'delete');
       }
     });
-  }
-
-  async deleteOrder(order: Order) {
-    if (this.deleteOrderMessage) return; // avoid spam of the delete button
-
-    const message = await this.orderService.processOrder(order, 'delete');
-    this.deleteOrderMessage = message;
-    this.cdRef.detectChanges();
-    setTimeout(() => {
-      this.deleteOrderMessage = '';
-      this.cdRef.detectChanges();
-    }, 2000);
   }
 
   handleNavigation() {

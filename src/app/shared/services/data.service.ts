@@ -12,16 +12,12 @@ export class DataService {
 
   constructor(private readonly ngZone: NgZone) {
     if (window.require) {
-      try {
-        this.ipcRenderer = window.require('electron').ipcRenderer;
-        this.ipcRenderer.on('reload-content', () => {
-          this.ngZone.run(() => {
-            this.refreshContent$.next("refresh");
-          });
-        })
-      } catch (e) {
-        throw e;
-      }
+      this.ipcRenderer = window.require('electron').ipcRenderer;
+      this.ipcRenderer.on('reload-content', () => {
+        this.ngZone.run(() => {
+          this.refreshContent$.next("refresh");
+        });
+      })
     }
   }
 

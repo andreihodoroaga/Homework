@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -24,6 +24,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from './shared/components/confirm-dialog/confirm-dialog.component';
 import { EditContainerComponent } from './shared/components/edit-container/edit-container.component';
+import { GlobalErrorHandlerService } from './shared/services/global-error-handler.service';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -54,8 +56,9 @@ import { EditContainerComponent } from './shared/components/edit-container/edit-
     MatChipsModule,
     MatListModule,
     MatDialogModule,
+    MatSnackBarModule,
   ],
-  providers: [],
+  providers: [{provide: ErrorHandler, useClass: GlobalErrorHandlerService}],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

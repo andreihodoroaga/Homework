@@ -20,3 +20,16 @@ a:hover {
   text-decoration:none;
   cursor:pointer;
 }
+
+// Snackbar styles
+.error {
+  .mat-mdc-snack-bar-label {
+    background: #c51244 ;
+    color: #fff;
+  }
+
+  .mdc-button__label {
+    font-size: 1.5rem;
+    color: #fff;
+  }
+}

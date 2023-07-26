@@ -74,27 +74,17 @@ describe('OrderService', () => {
   it('should add a new order', async () => {
     mockDataService.sendSignal.and.returnValue(Promise.resolve({success: true}));
 
-    const result = await orderService.processOrder(mockedOrders[0], 'add');
+    orderService.processOrder(mockedOrders[0], 'add');
 
     expect(mockDataService.sendSignal).toHaveBeenCalled();
-    expect(result).toEqual('');
-  });
-
-  it('should return a rejected promise when an order cannot be added', async () => {
-    mockDataService.sendSignal.and.returnValue(Promise.reject({ success: false, error: 'Error deleting the order' }));
-
-    await orderService.processOrder(mockedOrders[0], 'add').catch((result) => {
-      expect(result.error).toContain('Error');
-    });
   });
 
   it('should delete an order', async () => {
     mockDataService.sendSignal.and.returnValue(Promise.resolve({success: true}));
 
-    const result = await orderService.processOrder(mockedOrders[0], 'delete');
+    orderService.processOrder(mockedOrders[0], 'delete');
 
     expect(mockDataService.sendSignal).toHaveBeenCalledWith('delete-order', mockedOrders[0].id);
-    expect(result).toEqual('');
   });
 
   it('should get the next order\'s id', (done) => {
