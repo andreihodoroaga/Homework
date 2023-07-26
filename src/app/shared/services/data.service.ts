@@ -25,7 +25,7 @@ export class DataService {
     return new Observable((subscriber) => {
       this.ipcRenderer?.invoke(signal).then((data) => {
         this.ngZone.run(() => {
-          subscriber.next(JSON.parse(data));
+          subscriber.next(data);
           subscriber.complete();
         });
       });

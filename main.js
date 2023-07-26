@@ -62,22 +62,22 @@ function setCustomMenu() {
   Menu.setApplicationMenu(menu);
 }
 
+const getDataFromFile = (fileName) => {
+  const dataPath = path.join(__dirname, "data", fileName);
+  const data = fs.readFileSync(dataPath, "utf-8");
+  return JSON.parse(data);
+};
+
 ipcMain.handle("get-sculptures", (event, args) => {
-  const dataPath = path.join(__dirname, "data", "sculptures.json");
-  const sculpturesData = fs.readFileSync(dataPath, "utf-8");
-  return sculpturesData;
+  return getDataFromFile("sculptures.json");
 });
 
 ipcMain.handle("get-orders", (event, args) => {
-  const dataPath = path.join(__dirname, "data", "orders.json");
-  const ordersData = fs.readFileSync(dataPath, "utf-8");
-  return ordersData;
+  return getDataFromFile("orders.json");
 });
 
 const handleOperation = async (operation, event, objectData, objectType) => {
-  const dataPath = path.join(__dirname, "data", `${objectType}s.json`);
-  const objectsData = fs.readFileSync(dataPath, "utf-8");
-  const objects = JSON.parse(objectsData);
+  const objects = getDataFromFile(`${objectType}s.json`);
 
   let updatedObjects;
   if (operation === "add") {
@@ -98,6 +98,7 @@ const handleOperation = async (operation, event, objectData, objectType) => {
     throw new Error("Invalid operation");
   }
 
+  const dataPath = path.join(__dirname, "data", `${objectType}s.json`);
   const updatedObjectsData = JSON.stringify(updatedObjects, null, 2);
   fs.writeFileSync(dataPath, updatedObjectsData);
 
