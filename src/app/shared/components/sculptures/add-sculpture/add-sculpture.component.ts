@@ -51,7 +51,7 @@ export class AddSculptureComponent implements OnDestroy, CanComponentDeactivate 
     private readonly sculptureService: SculptureService
   ) {}
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
     this.destroyed$.next();
     this.destroyed$.complete();
   }

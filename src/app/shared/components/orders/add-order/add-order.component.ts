@@ -67,7 +67,7 @@ export class AddOrderComponent
     private readonly orderService: OrderService
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.orderForm.valueChanges
       .pipe(takeUntil(this.destroyed$))
       .subscribe(() => {
@@ -84,7 +84,7 @@ export class AddOrderComponent
       });
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
     this.destroyed$.next();
     this.destroyed$.complete();
   }
@@ -97,7 +97,7 @@ export class AddOrderComponent
     return `${this.existingOrder ? 'Save' : 'Send'} Order`;
   }
 
-  isFormIncomplete(): boolean {
+  isFormIncomplete() {
     return this.orderForm.dirty && !this.formSubmitted;
   }
 

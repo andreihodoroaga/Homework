@@ -17,7 +17,7 @@ export class SculptureService implements OnDestroy {
     });
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
     this.destroyed$.next();
     this.destroyed$.complete();
   }

@@ -16,11 +16,11 @@ export class ConfirmDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: DialogData
   ) {}
 
-  onConfirm(): void {
+  onConfirm() {
     this.dialogRef.close(true);
   }
 
-  onCancel(): void {
+  onCancel() {
     this.dialogRef.close(false);
   }
 }

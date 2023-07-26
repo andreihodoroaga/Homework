@@ -16,7 +16,7 @@ export class SculpturesComponent implements OnInit {
   constructor(private sculptureService: SculptureService, private router: Router) {
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.sculptures$ = this.sculptureService.sculptureList$;
   }
 

@@ -63,11 +63,11 @@ export class ConfiguredSculptureFormComponent
       .subscribe(() => this.updateValue());
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.sculptureService.fetchSculptures();
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
     this.destroyed$.next();
     this.destroyed$.complete();
   }
@@ -92,7 +92,7 @@ export class ConfiguredSculptureFormComponent
       .reduce((partialSum, a) => partialSum + a, 0);
   }
 
-  writeValue(value: ConfiguredSculpture): void {
+  writeValue(value: ConfiguredSculpture) {
     if (value) {
       this.value = value;
       this.sculptureControl.setValue(this.value.sculpture, {
@@ -102,19 +102,19 @@ export class ConfiguredSculptureFormComponent
     }
   }
 
-  registerOnChange(fn: (value: ConfiguredSculpture) => void): void {
+  registerOnChange(fn: (value: ConfiguredSculpture) => void) {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: () => void): void {
+  registerOnTouched(fn: () => void) {
     this.onTouched = fn;
   }
 
-  setDisabledState(isDisabled: boolean): void {
+  setDisabledState(isDisabled: boolean) {
     this.disabled = isDisabled;
   }
 
-  updateValue(): void {
+  updateValue() {
     this.value = {
       sculpture: this.sculptureControl.value,
       material: this.materialControl.value,
