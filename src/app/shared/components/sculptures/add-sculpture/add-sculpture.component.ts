@@ -7,7 +7,7 @@ import {
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { CanComponentDeactivate } from 'src/app/shared/guards/form-incomplete.guard';
+import { CanFormComponentDeactivate } from 'src/app/shared/guards/form-incomplete.guard';
 import { SculptureService } from 'src/app/shared/services/sculpture.service';
 import { Sculpture } from 'src/app/shared/models/sculpture';
 
@@ -17,7 +17,7 @@ import { Sculpture } from 'src/app/shared/models/sculpture';
   styleUrls: ['./add-sculpture.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AddSculptureComponent implements OnDestroy, CanComponentDeactivate {
+export class AddSculptureComponent implements OnDestroy, CanFormComponentDeactivate {
   private _existingSculpture?: Sculpture;
 
   public get existingSculpture() {

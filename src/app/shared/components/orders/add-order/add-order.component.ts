@@ -14,7 +14,7 @@ import { OrderService } from 'src/app/shared/services/order.service';
 import { totalWeightValidator } from 'src/app/shared/directives/totalWeightValidator.directive';
 import { Subject, takeUntil } from 'rxjs';
 import * as uuid from 'uuid';
-import { CanComponentDeactivate } from 'src/app/shared/guards/form-incomplete.guard';
+import { CanFormComponentDeactivate } from 'src/app/shared/guards/form-incomplete.guard';
 
 @Component({
   selector: 'app-add-order',
@@ -23,7 +23,7 @@ import { CanComponentDeactivate } from 'src/app/shared/guards/form-incomplete.gu
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddOrderComponent
-  implements OnInit, OnDestroy, CanComponentDeactivate
+  implements OnInit, OnDestroy, CanFormComponentDeactivate
 {
   private _existingOrder?: Order;
 

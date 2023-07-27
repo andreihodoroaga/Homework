@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { map } from 'rxjs';
-import { CanComponentDeactivate } from 'src/app/shared/guards/form-incomplete.guard';
+import { map, switchMap } from 'rxjs';
+import { CanFormComponentDeactivate } from 'src/app/shared/guards/form-incomplete.guard';
 import { Sculpture } from 'src/app/shared/models/sculpture';
 import { SculptureService } from 'src/app/shared/services/sculpture.service';
 import { AddSculptureComponent } from '../add-sculpture/add-sculpture.component';
@@ -11,13 +11,13 @@ import { AddSculptureComponent } from '../add-sculpture/add-sculpture.component'
   templateUrl: './edit-sculpture.component.html',
   styleUrls: ['./edit-sculpture.component.scss'],
 })
-export class EditSculptureComponent implements CanComponentDeactivate {
-  sculpture$ = this.sculptureService.sculptureList$.pipe(
-    map((sculptures) =>
-      sculptures.find(
-        (ord) => ord.id === this.activatedRoute.snapshot.params['id']
-      )
-    )
+export class EditSculptureComponent implements CanFormComponentDeactivate {
+  sculpture$ = this.activatedRoute.params.pipe(
+    switchMap((params) => {
+      return this.sculptureService.sculptureList$.pipe(
+        map((sculptures) => sculptures.find((ord) => ord.id === params['id']))
+      );
+    })
   );
 
   @ViewChild(AddSculptureComponent)
@@ -31,15 +31,13 @@ export class EditSculptureComponent implements CanComponentDeactivate {
 
   isFormIncomplete() {
     return this.addSculptureComponent.isFormIncomplete();
-  };
+  }
 
   handleNavigation(sculpture: Sculpture, direction: number) {
     this.sculptureService
       .getNextSculptureId(sculpture, direction)
       .subscribe((id) => {
-        this.router
-          .navigateByUrl('/', { skipLocationChange: true })
-          .then(() => this.router.navigate(['sculptures', id]));
+        this.router.navigate(['sculptures', id]);
       });
   }
 }

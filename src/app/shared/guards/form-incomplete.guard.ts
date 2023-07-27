@@ -3,7 +3,7 @@ import { CanDeactivateFn } from '@angular/router';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../components/confirm-dialog/confirm-dialog.component';
 
-export interface CanComponentDeactivate {
+export interface CanFormComponentDeactivate {
   isFormIncomplete: () => boolean;
 }
 
@@ -13,7 +13,7 @@ export interface CanComponentDeactivate {
 export class FormIncompleteGuard {
   constructor(private dialog: MatDialog) { }
 
-  canDeactivate: CanDeactivateFn<CanComponentDeactivate> = (component: CanComponentDeactivate) => {
+  canDeactivate: CanDeactivateFn<CanFormComponentDeactivate> = (component: CanFormComponentDeactivate) => {
     if (component.isFormIncomplete()) {
       const dialogConfig = new MatDialogConfig();
       dialogConfig.autoFocus = true;
