@@ -21,7 +21,7 @@ function createWindow() {
   } else {
     mainWindow.loadURL(
       url.format({
-        pathname: path.join(__dirname, `/dist/homework/index.html`),
+        pathname: path.join(__dirname, `/dist/order-sculptures/index.html`),
         protocol: "file:",
         slashes: true,
       })
